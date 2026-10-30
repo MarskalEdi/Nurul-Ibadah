@@ -1,0 +1,1690 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Nurul Ibadah — Aplikasi Pengingat & Evaluasi Ibadah</title>
+  
+  <!-- Favicon Emblem -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%23006948'/><path d='M50 20 A30 30 0 1 0 75 75 A25 25 0 1 1 50 20 Z' fill='%2385f8c4'/></svg>"/>
+
+  <!-- Google Fonts: Plus Jakarta Sans (UI) & Amiri (Arabic) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Amiri:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet"/>
+  
+  <!-- Material Symbols Outlined -->
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#006948",
+            "primary-dark": "#047857",
+            "primary-container": "#00855d",
+            "on-primary": "#ffffff",
+            "on-primary-container": "#f5fff7",
+            "secondary": "#006c49",
+            "secondary-container": "#6cf8bb",
+            "tertiary": "#8d4b00",
+            "tertiary-fixed": "#ffdcc3",
+            "on-tertiary-fixed": "#2f1500",
+            "tertiary-container": "#b15f00",
+            "dark-amber-gold": "#FBBF24",
+            "soft-mint": "#D1FAE5",
+            "dark-glow-mint": "#34D399",
+            "arabic-calligraphy": "#064E3B",
+            "background": "#f0fdf4",
+            "surface": "#f0fdf4",
+            "surface-container-lowest": "#ffffff",
+            "surface-container-low": "#eaf7ee",
+            "surface-container": "#e4f1e8",
+            "surface-container-high": "#deebe3",
+            "surface-variant": "#d9e6dd",
+            "text-primary": "#0F172A",
+            "text-secondary": "#475569",
+            "border-light": "#E2E8F0",
+            "outline": "#6d7a72",
+            "outline-variant": "#bccac0",
+            "dark-canvas": "#060F0C",
+            "dark-surface": "#0D1E18",
+            "dark-border": "#1B382D",
+            "dark-text-primary": "#F8FAFC",
+            "dark-text-secondary": "#94A3B8"
+          },
+          fontFamily: {
+            sans: ["'Plus Jakarta Sans'", "sans-serif"],
+            arabic: ["'Amiri'", "serif"]
+          }
+        }
+      }
+    };
+  </script>
+
+  <!-- Chart.js & QRCode.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body class="bg-background text-text-primary dark:bg-dark-canvas dark:text-dark-text-primary antialiased min-h-screen pb-20 lg:pb-8">
+
+  <!-- =========================================================================
+       TOP GLOBAL HEADER & NAVIGATION BAR
+       ========================================================================= -->
+  <header class="fixed top-0 left-0 right-0 z-50 bg-surface-container-lowest/90 dark:bg-dark-surface/90 backdrop-blur-xl border-b border-border-light dark:border-dark-border shadow-[0_1px_8px_rgba(0,105,72,0.06)]">
+    <div class="h-[68px] max-w-[1200px] mx-auto px-4 md:px-6 flex items-center justify-between gap-4">
+      
+      <!-- Brand Logo & App Name -->
+      <a href="#" data-path="beranda" class="flex items-center gap-3 shrink-0 group">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-primary to-primary-container flex items-center justify-center text-white shadow-md group-hover:scale-105 transition-transform">
+          <span class="material-symbols-outlined text-[22px]" style="font-variation-settings: 'FILL' 1;">mosque</span>
+        </div>
+        <div class="flex flex-col">
+          <span class="font-bold text-lg text-primary dark:text-dark-glow-mint leading-tight">Nurul Ibadah</span>
+          <span class="text-[11px] font-semibold text-text-secondary dark:text-dark-text-secondary hidden sm:inline-block">Aplikasi Pengingat &amp; Evaluasi Ibadah</span>
+        </div>
+      </a>
+
+      <!-- Location & Hijri Date Badge -->
+      <div class="hidden xl:flex items-center">
+        <div class="flex items-center gap-2 bg-surface-container dark:bg-dark-surface px-3 py-1.5 rounded-full border border-border-light dark:border-dark-border shadow-sm">
+          <span class="flex h-2 w-2 relative">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+          </span>
+          <span class="text-xs text-text-secondary dark:text-dark-text-secondary font-medium">Jakarta (WIB) • 18 Rabiul Awal 1448 H</span>
+        </div>
+      </div>
+
+      <!-- Desktop Navigation Links -->
+      <nav class="hidden lg:flex items-center gap-1">
+        <a href="#" data-path="beranda" class="px-3 py-2 text-sm transition-colors rounded-lg bg-primary-container text-on-primary-container font-semibold">Beranda</a>
+        <a href="#" data-path="mutabaah-harian" class="px-3 py-2 text-sm text-text-secondary dark:text-dark-text-secondary hover:text-primary dark:hover:text-dark-glow-mint transition-colors">Mutaba'ah Harian</a>
+        <a href="#" data-path="evaluasi-dan-grafik" class="px-3 py-2 text-sm text-text-secondary dark:text-dark-text-secondary hover:text-primary dark:hover:text-dark-glow-mint transition-colors">Evaluasi &amp; Grafik</a>
+        <a href="#" data-path="rapor-bulanan" class="px-3 py-2 text-sm text-text-secondary dark:text-dark-text-secondary hover:text-primary dark:hover:text-dark-glow-mint transition-colors">Rapor Bulanan</a>
+        <a href="#" data-path="pengaturan" class="px-3 py-2 text-sm text-text-secondary dark:text-dark-text-secondary hover:text-primary dark:hover:text-dark-glow-mint transition-colors">Pengaturan</a>
+      </nav>
+
+      <!-- Right Controls: Theme Toggle & Profile -->
+      <div class="flex items-center gap-2 shrink-0">
+        <!-- Day/Night Toggle Button -->
+        <button type="button" aria-label="Beralih Mode Tema" class="theme-toggle-btn p-2 rounded-full text-text-secondary dark:text-dark-text-secondary hover:bg-surface-container dark:hover:bg-dark-border transition-colors flex items-center justify-center">
+          <span class="material-symbols-outlined text-[20px] dark:hidden">dark_mode</span>
+          <span class="material-symbols-outlined text-[20px] hidden dark:inline text-dark-amber-gold">light_mode</span>
+        </button>
+
+        <!-- Notification Bell -->
+        <button type="button" aria-label="Notifikasi Ibadah" onclick="showToast('Notifikasi pengingat ibadah aktif!')" class="relative p-2 rounded-full text-text-secondary dark:text-dark-text-secondary hover:bg-surface-container dark:hover:bg-dark-border transition-colors flex items-center justify-center">
+          <span class="material-symbols-outlined text-[20px]">notifications</span>
+          <span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-amber-500 ring-2 ring-white dark:ring-dark-surface"></span>
+        </button>
+
+        <!-- User Profile Pill -->
+        <div class="flex items-center gap-2 pl-2 border-l border-border-light dark:border-dark-border">
+          <div class="hidden sm:flex flex-col text-right">
+            <span class="text-xs text-text-primary dark:text-dark-text-primary font-semibold leading-tight">Fulan bin Fulan</span>
+            <span class="text-[10px] text-text-secondary dark:text-dark-text-secondary">Penuntut Ilmu</span>
+          </div>
+          <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0 text-white font-bold text-xs shadow-sm">
+            <span class="material-symbols-outlined text-[18px]">person</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- =========================================================================
+       MAIN CONTENT CONTAINER
+       ========================================================================= -->
+  <main class="w-full pt-[78px]">
+    <div class="max-w-[1200px] mx-auto px-4 md:px-6 py-6">
+
+      <!-- =====================================================================
+           PANEL 1: BERANDA / DASHBOARD WAKTU SALAT (VIEW 1)
+           ===================================================================== -->
+      <div id="view-beranda" class="view-panel flex flex-col gap-6">
+        
+        <!-- 1. Hero Prayer Countdown Banner -->
+        <section class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-arabic-calligraphy via-primary to-primary-container text-white shadow-xl p-6 md:p-8">
+          <!-- Geometric Mosaic Pattern -->
+          <div class="absolute inset-0 opacity-10 pointer-events-none mix-blend-overlay">
+            <svg class="w-full h-full object-cover" fill="none" preserveAspectRatio="none" stroke="currentColor" stroke-width="0.75" viewBox="0 0 100 100">
+              <pattern id="mosaic-pattern" width="20" height="20" patternUnits="userSpaceOnUse">
+                <path d="M10 0 L20 10 L10 20 L0 10 Z"></path>
+                <circle cx="10" cy="10" r="5"></circle>
+                <path d="M0 0 L10 10 L20 0 M0 20 L10 10 L20 20"></path>
+              </pattern>
+              <rect width="100%" height="100%" fill="url(#mosaic-pattern)"></rect>
+            </svg>
+          </div>
+
+          <div class="relative z-10 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+            <!-- Left: Next Prayer Countdown -->
+            <div class="flex flex-col gap-2 max-w-2xl">
+              <div class="flex items-center gap-2 flex-wrap">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/20 text-emerald-200 text-xs font-bold tracking-wider uppercase backdrop-blur-sm">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-300 animate-ping"></span>
+                  JADWAL SHALAT &amp; COUNTDOWN
+                </span>
+                <span class="text-white/80 text-xs">• Jakarta Pusat &amp; Sekitarnya</span>
+              </div>
+              
+              <p class="text-xs uppercase tracking-wider text-white/90 mt-1">Waktu Salat Berikutnya</p>
+              <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white flex items-baseline gap-3">
+                <span id="next-prayer-name">ASHAR</span>
+                <span id="next-prayer-time" class="text-secondary-container font-extrabold text-3xl sm:text-4xl">15:15 <span class="text-base font-normal">WIB</span></span>
+              </h1>
+              
+              <div class="flex flex-wrap items-center gap-3 mt-1">
+                <!-- Interactive Countdown Pill -->
+                <div class="inline-flex items-center gap-2 bg-tertiary-fixed text-on-tertiary-fixed px-4 py-2 rounded-full font-bold text-sm shadow-md">
+                  <span>⏱️</span>
+                  <span>Tersisa</span>
+                  <span id="countdown-val" class="tracking-tight">01 Jam 24 Menit 32 Detik</span>
+                </div>
+                <span class="text-xs text-white/80 hidden sm:inline-block">
+                  Adzan berkumandang otomatis sesuai koordinat lintang/bujur Anda
+                </span>
+              </div>
+            </div>
+
+            <!-- Right: Qibla Compass Widget & Audio Adzan Toggle -->
+            <div class="w-full lg:w-auto shrink-0 bg-white/10 dark:bg-black/30 backdrop-blur-md p-4 rounded-xl flex flex-col sm:flex-row items-center gap-5 border border-white/15">
+              <!-- Interactive Compass Disc -->
+              <div class="relative w-28 h-28 flex items-center justify-center shrink-0">
+                <div class="absolute inset-0 rounded-full bg-primary-dark/50 shadow-inner"></div>
+                <!-- Compass Markings -->
+                <svg class="absolute inset-0 w-full h-full text-secondary-container/50" viewBox="0 0 100 100">
+                  <circle cx="50" cy="50" r="46" fill="none" stroke="currentColor" stroke-dasharray="2 3" stroke-width="1.5"></circle>
+                  <text x="50" y="14" fill="#85f8c4" font-size="8" font-weight="700" text-anchor="middle">U</text>
+                  <text x="88" y="53" fill="currentColor" font-size="7" text-anchor="middle">T</text>
+                  <text x="50" y="92" fill="currentColor" font-size="7" text-anchor="middle">S</text>
+                  <text x="12" y="53" fill="currentColor" font-size="7" text-anchor="middle">B</text>
+                </svg>
+                <!-- Needle Dialed to 295° NW -->
+                <div class="relative w-24 h-24 flex items-center justify-center transition-transform duration-700 ease-out" style="transform: rotate(295deg);">
+                  <div class="w-1 h-20 flex flex-col justify-between items-center">
+                    <div class="w-0 h-0 border-l-[5px] border-l-transparent border-r-[5px] border-r-transparent border-b-[20px] border-b-amber-400 shadow-sm"></div>
+                    <div class="w-1.5 h-1.5 rounded-full bg-white"></div>
+                    <div class="w-0 h-0 border-l-[4px] border-l-transparent border-r-[4px] border-r-transparent border-t-[14px] border-t-white/60"></div>
+                  </div>
+                </div>
+                <!-- Center Emblem -->
+                <div class="absolute w-5 h-5 rounded-full bg-arabic-calligraphy flex items-center justify-center shadow">
+                  <span class="material-symbols-outlined text-[13px] text-amber-300 filled">explore</span>
+                </div>
+              </div>
+
+              <!-- Compass Info -->
+              <div class="flex flex-col gap-1 text-center sm:text-left">
+                <div class="flex items-center justify-center sm:justify-start gap-1">
+                  <span class="text-lg font-bold text-secondary-container">295°</span>
+                  <span class="text-xs uppercase font-semibold text-white/80">Barat Laut</span>
+                </div>
+                <span class="text-sm font-semibold text-white">Arah Kiblat Jakarta</span>
+                <span class="text-xs text-white/75">Jarak Ka'bah: 7.912 km</span>
+                <button type="button" id="adhan-toggle-btn" class="mt-2 inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/20 hover:bg-white/30 text-white text-xs font-semibold transition-colors">
+                  <span id="adhan-icon" class="material-symbols-outlined text-[18px] text-secondary-container">volume_up</span>
+                  <span id="adhan-label">Adzan Aktif</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 2. Prayer Schedule 5-Card Horizontal Row -->
+        <section class="flex flex-col gap-3">
+          <div class="flex items-center justify-between">
+            <h2 class="text-base sm:text-lg font-bold text-text-primary dark:text-dark-text-primary flex items-center gap-2">
+              <span class="material-symbols-outlined text-primary text-[20px]">calendar_today</span>
+              Jadwal Shalat Fardhu Hari Ini
+            </h2>
+            <span class="text-xs text-text-secondary dark:text-dark-text-secondary">Metode: Kemenag RI (Kalkulasi Akurat)</span>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+            <!-- 1. Subuh (Sudah) -->
+            <div class="p-4 rounded-xl bg-surface-container-low dark:bg-dark-surface border border-border-light dark:border-dark-border shadow-sm flex flex-col justify-between gap-4">
+              <div class="flex items-start justify-between">
+                <span class="font-bold text-base text-text-primary dark:text-dark-text-primary">Subuh</span>
+                <span class="px-2 py-0.5 rounded-full bg-soft-mint dark:bg-primary/30 text-primary dark:text-dark-glow-mint text-[11px] font-bold">Sudah ✓</span>
+              </div>
+              <div>
+                <span class="text-2xl font-bold text-primary dark:text-dark-glow-mint">04:28</span>
+                <span class="text-xs text-text-secondary dark:text-dark-text-secondary block mt-0.5">Selesai Berjama'ah</span>
+              </div>
+            </div>
+
+            <!-- 2. Dzuhur (Sudah) -->
+            <div class="p-4 rounded-xl bg-surface-container-low dark:bg-dark-surface border border-border-light dark:border-dark-border shadow-sm flex flex-col justify-between gap-4">
+              <div class="flex items-start justify-between">
+                <span class="font-bold text-base text-text-primary dark:text-dark-text-primary">Dzuhur</span>
+                <span class="px-2 py-0.5 rounded-full bg-soft-mint dark:bg-primary/30 text-primary dark:text-dark-glow-mint text-[11px] font-bold">Sudah ✓</span>
+              </div>
+              <div>
+                <span class="text-2xl font-bold text-primary dark:text-dark-glow-mint">11:52</span>
+                <span class="text-xs text-text-secondary dark:text-dark-text-secondary block mt-0.5">Selesai Berjama'ah</span>
+              </div>
+            </div>
+
+            <!-- 3. Ashar (Segera Masuk - Active Highlight) -->
+            <div class="p-4 rounded-xl bg-surface-container-lowest dark:bg-dark-surface border-2 border-primary dark:border-dark-glow-mint shadow-md flex flex-col justify-between gap-4 relative overflow-hidden">
+              <div class="flex items-start justify-between">
+                <span class="font-bold text-base text-primary dark:text-dark-glow-mint">Ashar</span>
+                <span class="px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-900/40 text-amber-800 dark:text-amber-300 text-[11px] font-bold flex items-center gap-1">
+                  <span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-ping"></span>
+                  SEGERA MASUK
+                </span>
+              </div>
+              <div>
+                <span class="text-2xl font-extrabold text-primary dark:text-dark-glow-mint">15:15 <span class="text-xs font-normal">WIB</span></span>
+                <span class="text-xs text-amber-700 dark:text-amber-400 font-semibold block mt-0.5">Persiapkan Wudhu &amp; Sunnah</span>
+              </div>
+            </div>
+
+            <!-- 4. Maghrib (Mendatang) -->
+            <div class="p-4 rounded-xl bg-surface-container-low dark:bg-dark-surface border border-border-light dark:border-dark-border shadow-sm flex flex-col justify-between gap-4">
+              <div class="flex items-start justify-between">
+                <span class="font-bold text-base text-text-primary dark:text-dark-text-primary">Maghrib</span>
+                <span class="px-2 py-0.5 rounded-full bg-surface-container dark:bg-dark-border text-text-secondary dark:text-dark-text-secondary text-[11px] font-medium">Mendatang</span>
+              </div>
+              <div>
+                <span class="text-2xl font-bold text-text-primary dark:text-dark-text-primary">17:58 <span class="text-xs font-normal text-text-secondary">WIB</span></span>
+                <span class="text-xs text-text-secondary dark:text-dark-text-secondary block mt-0.5">Jadwal Berbuka Puasa</span>
+              </div>
+            </div>
+
+            <!-- 5. Isya (Mendatang) -->
+            <div class="p-4 rounded-xl bg-surface-container-low dark:bg-dark-surface border border-border-light dark:border-dark-border shadow-sm flex flex-col justify-between gap-4">
+              <div class="flex items-start justify-between">
+                <span class="font-bold text-base text-text-primary dark:text-dark-text-primary">Isya</span>
+                <span class="px-2 py-0.5 rounded-full bg-surface-container dark:bg-dark-border text-text-secondary dark:text-dark-text-secondary text-[11px] font-medium">Mendatang</span>
+              </div>
+              <div>
+                <span class="text-2xl font-bold text-text-primary dark:text-dark-text-primary">19:09 <span class="text-xs font-normal text-text-secondary">WIB</span></span>
+                <span class="text-xs text-text-secondary dark:text-dark-text-secondary block mt-0.5">Dilanjutkan Sholat Witir</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 3. Ringkasan Mutaba'ah Hari Ini & Hadis Motivasi Row (2 Kolom) -->
+        <section class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <!-- Left Column: Donut Amalan Ring (5 Kolom) -->
+          <div class="lg:col-span-5 bg-surface-container-lowest dark:bg-dark-surface p-6 rounded-2xl border border-border-light dark:border-dark-border shadow-sm flex flex-col justify-between gap-5">
+            <div class="flex items-center justify-between">
+              <div>
+                <span class="text-xs uppercase font-bold text-primary dark:text-dark-glow-mint tracking-wider block">CAPAIAN HARIAN</span>
+                <h3 class="text-lg font-bold text-text-primary dark:text-dark-text-primary">Ringkasan Mutaba'ah Hari Ini</h3>
+              </div>
+              <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 text-xs font-bold">
+                🔥 14 Hari Istiqomah
+              </span>
+            </div>
+
+            <div class="flex items-center gap-5">
+              <!-- SVG Donut Progress Circle -->
+              <div class="relative w-28 h-28 shrink-0 flex items-center justify-center">
+                <svg class="w-full h-full -rotate-90" viewBox="0 0 100 100">
+                  <circle cx="50" cy="50" r="40" fill="transparent" stroke="currentColor" stroke-width="9" class="text-surface-container-low dark:text-dark-border"></circle>
+                  <circle id="beranda-donut-circle" cx="50" cy="50" r="40" fill="transparent" stroke="#006948" stroke-width="9" stroke-dasharray="251.2" stroke-dashoffset="62.8" stroke-linecap="round" class="transition-all duration-700"></circle>
+                </svg>
+                <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
+                  <span id="beranda-donut-score" class="text-2xl font-extrabold text-primary dark:text-dark-glow-mint leading-none">75%</span>
+                  <span class="text-[10px] text-text-secondary dark:text-dark-text-secondary font-medium">Tuntas</span>
+                </div>
+              </div>
+
+              <!-- Badges & Checklist Summary -->
+              <div class="flex flex-col gap-1.5 text-xs">
+                <span class="font-bold text-sm text-text-primary dark:text-dark-text-primary">6 dari 8 amalan tercapai hari ini</span>
+                <p class="text-text-secondary dark:text-dark-text-secondary leading-snug">Target harian hampir selesai! Lengkapi amalan sore dan malam untuk menyempurnakan buku catatan amal.</p>
+                <div class="flex flex-wrap gap-1 mt-1">
+                  <span class="px-2 py-0.5 rounded bg-soft-mint dark:bg-primary/30 text-primary dark:text-dark-glow-mint font-semibold text-[10px]">✓ 2 Salat Berjamaah</span>
+                  <span class="px-2 py-0.5 rounded bg-soft-mint dark:bg-primary/30 text-primary dark:text-dark-glow-mint font-semibold text-[10px]">✓ Dhuha 4 Rakaat</span>
+                  <span class="px-2 py-0.5 rounded bg-soft-mint dark:bg-primary/30 text-primary dark:text-dark-glow-mint font-semibold text-[10px]">✓ Tilawah 8 Halaman</span>
+                </div>
+              </div>
+            </div>
+
+            <a href="#" data-path="mutabaah-harian" class="w-full inline-flex items-center justify-center gap-2 bg-primary hover:bg-primary-dark text-white font-bold text-sm py-3 px-4 rounded-xl shadow-md transition-transform active:scale-95">
+              <span>Isi &amp; Lengkapi Mutaba'ah Hari Ini</span>
+              <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+            </a>
+          </div>
+
+          <!-- Right Column: Hadis Harian (7 Kolom) -->
+          <div class="lg:col-span-7 bg-surface-container-low dark:bg-dark-surface p-6 rounded-2xl border border-border-light dark:border-dark-border shadow-sm flex flex-col justify-between gap-4">
+            <div class="flex items-center justify-between">
+              <span class="inline-flex items-center gap-1 text-xs font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400 bg-amber-100 dark:bg-amber-900/40 px-2.5 py-1 rounded-full">
+                KUTIPAN HADIS SHAHIH HARI INI
+              </span>
+              <span class="material-symbols-outlined text-primary dark:text-dark-glow-mint text-[22px]">menu_book</span>
+            </div>
+
+            <!-- Arabic Calligraphy Text -->
+            <div class="my-2" dir="rtl">
+              <p class="font-arabic text-2xl sm:text-3xl text-arabic-calligraphy dark:text-dark-glow-mint leading-relaxed">
+                أَحَبُّ الأَعْمَالِ إِلَى اللَّهِ أَدْوَمُهَا وَإِنْ قَلَّ
+              </p>
+            </div>
+
+            <!-- Indonesian Translation -->
+            <div class="flex flex-col gap-1">
+              <blockquote class="text-sm italic text-text-primary dark:text-dark-text-primary leading-relaxed">
+                “Amalan yang paling dicintai oleh Allah adalah amalan yang kontinu (istiqomah) walaupun sedikit.”
+              </blockquote>
+              <span class="text-xs font-bold text-primary dark:text-dark-glow-mint mt-1">HR. Bukhari no. 6464 &amp; Muslim no. 782</span>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex items-center gap-3 pt-2">
+              <button type="button" onclick="showToast('Kutipan hadis berhasil disalin ke clipboard')" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-container-lowest dark:bg-dark-border text-xs font-semibold hover:bg-surface-container transition-colors shadow-sm">
+                <span class="material-symbols-outlined text-[16px]">share</span>
+                Bagikan Hadis
+              </button>
+              <button type="button" onclick="showToast('Hadis disimpan ke daftar favorit')" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-container-lowest dark:bg-dark-border text-xs font-semibold hover:bg-surface-container transition-colors shadow-sm">
+                <span class="material-symbols-outlined text-[16px]">bookmark</span>
+                Simpan Favorit
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- 4. Quick Access Shortcuts Grid -->
+        <section class="flex flex-col gap-3">
+          <div class="flex items-center justify-between">
+            <span class="text-xs uppercase font-bold text-text-secondary dark:text-dark-text-secondary tracking-wider">AKSES CEPAT LAYANAN</span>
+            <span class="text-xs text-primary dark:text-dark-glow-mint font-semibold flex items-center gap-1">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+              Tersedia Mode Offline
+            </span>
+          </div>
+
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <div onclick="showToast('Fitur Imsak & Puasa siap digunakan')" class="p-4 rounded-xl bg-surface-container-lowest dark:bg-dark-surface border border-border-light dark:border-dark-border shadow-sm flex items-center gap-3 hover:bg-surface-container-low transition-colors cursor-pointer">
+              <div class="w-10 h-10 rounded-lg bg-soft-mint dark:bg-primary/30 flex items-center justify-center text-primary dark:text-dark-glow-mint shrink-0">
+                <span class="material-symbols-outlined text-[20px]">nightlight</span>
+              </div>
+              <div class="flex flex-col">
+                <span class="font-bold text-sm text-text-primary dark:text-dark-text-primary leading-tight">Imsak &amp; Puasa</span>
+                <span class="text-[11px] text-text-secondary dark:text-dark-text-secondary">Sunnah &amp; Wajib</span>
+              </div>
+            </div>
+
+            <div onclick="showToast('Dzikir Pagi & Petang Al-Matsurat')" class="p-4 rounded-xl bg-surface-container-lowest dark:bg-dark-surface border border-border-light dark:border-dark-border shadow-sm flex items-center gap-3 hover:bg-surface-container-low transition-colors cursor-pointer">
+              <div class="w-10 h-10 rounded-lg bg-soft-mint dark:bg-primary/30 flex items-center justify-center text-primary dark:text-dark-glow-mint shrink-0">
+                <span class="material-symbols-outlined text-[20px]">spa</span>
+              </div>
+              <div class="flex flex-col">
+                <span class="font-bold text-sm text-text-primary dark:text-dark-text-primary leading-tight">Dzikir Al-Ma'tsurat</span>
+                <span class="text-[11px] text-text-secondary dark:text-dark-text-secondary">Pagi &amp; Petang</span>
+              </div>
+            </div>
+
+            <div onclick="showToast('Arah kiblat 295° Barat Laut dari lokasi Anda')" class="p-4 rounded-xl bg-surface-container-lowest dark:bg-dark-surface border border-border-light dark:border-dark-border shadow-sm flex items-center gap-3 hover:bg-surface-container-low transition-colors cursor-pointer">
+              <div class="w-10 h-10 rounded-lg bg-amber-100 dark:bg-amber-900/40 flex items-center justify-center text-amber-700 dark:text-amber-400 shrink-0">
+                <span class="material-symbols-outlined text-[20px]">explore</span>
+              </div>
+              <div class="flex flex-col">
+                <span class="font-bold text-sm text-text-primary dark:text-dark-text-primary leading-tight">Arah Kiblat</span>
+                <span class="text-[11px] text-text-secondary dark:text-dark-text-secondary">Sensor Kalibrasi GPS</span>
+              </div>
+            </div>
+
+            <div onclick="showToast('Panduan Shalat Sunnah Rawatib & Dhuha')" class="p-4 rounded-xl bg-surface-container-lowest dark:bg-dark-surface border border-border-light dark:border-dark-border shadow-sm flex items-center gap-3 hover:bg-surface-container-low transition-colors cursor-pointer">
+              <div class="w-10 h-10 rounded-lg bg-soft-mint dark:bg-primary/30 flex items-center justify-center text-primary dark:text-dark-glow-mint shrink-0">
+                <span class="material-symbols-outlined text-[20px]">menu_book</span>
+              </div>
+              <div class="flex flex-col">
+                <span class="font-bold text-sm text-text-primary dark:text-dark-text-primary leading-tight">Shalat Sunnah</span>
+                <span class="text-[11px] text-text-secondary dark:text-dark-text-secondary">Tata Cara &amp; Doa</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+
+      <!-- =====================================================================
+           PANEL 2: CHECKLIST MUTABA'AH HARIAN (VIEW 2)
+           ===================================================================== -->
+      <div id="view-mutabaah-harian" class="view-panel hidden flex flex-col gap-6 pb-24">
+        
+        <!-- Header Banner & Sync Status -->
+        <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-surface-container-lowest via-surface-container-low to-surface-container dark:from-dark-surface dark:via-dark-surface dark:to-dark-border p-6 shadow-sm border border-border-light dark:border-dark-border">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div class="flex flex-col gap-1">
+              <div class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-soft-mint dark:bg-primary/30 text-primary dark:text-dark-glow-mint text-xs font-bold uppercase w-fit">
+                <span class="material-symbols-outlined text-[15px]">verified</span>
+                Lembar Muhasabah Diri
+              </div>
+              <h1 class="text-2xl font-bold text-text-primary dark:text-dark-text-primary">Checklist Amalan &amp; Mutaba'ah Harian</h1>
+              <p class="text-sm text-text-secondary dark:text-dark-text-secondary">Catat amalan wajib dan sunnahmu secara 1-klik untuk istiqomah beribadah.</p>
+            </div>
+
+            <!-- Dynamic Sync Badge -->
+            <div id="sync-status-badge" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-container-lowest dark:bg-dark-surface border border-border-light dark:border-dark-border shadow-sm text-xs font-semibold w-fit">
+              <span class="relative flex h-2 w-2">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+              </span>
+              <span class="text-primary dark:text-dark-glow-mint">Tersinkron Otomatis ke Google Sheets</span>
+            </div>
+          </div>
+
+          <!-- Date Selector Toolbar -->
+          <div class="mt-4 pt-4 flex flex-wrap items-center justify-between gap-2 border-t border-border-light dark:border-dark-border">
+            <button type="button" id="btn-prev-date" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-text-secondary dark:text-dark-text-secondary hover:text-primary hover:bg-surface-container text-xs font-semibold transition-colors">
+              <span class="material-symbols-outlined text-[16px]">chevron_left</span>
+              Kemarin
+            </button>
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary text-white text-xs font-bold shadow-sm">
+              <span class="material-symbols-outlined text-[16px]">calendar_today</span>
+              <span id="mutabaah-date-label">Hari Ini: Rabu, 22 Oktober 2026 / 18 Rabiul Awal 1448 H</span>
+            </div>
+            <button type="button" id="btn-next-date" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-text-secondary dark:text-dark-text-secondary hover:text-primary hover:bg-surface-container text-xs font-semibold transition-colors">
+              Besok
+              <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 2 Column Layout (Form & Summary Sidebar) -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          
+          <!-- Left Column (8 Kolom): Form Mutaba'ah -->
+          <div class="lg:col-span-8 flex flex-col gap-6">
+            
+            <!-- 1. Salat Fardhu 5 Waktu -->
+            <section class="bg-surface-container-lowest dark:bg-dark-surface rounded-2xl p-6 border border-border-light dark:border-dark-border shadow-sm flex flex-col gap-4">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                  <span class="w-9 h-9 rounded-xl bg-soft-mint dark:bg-primary/30 text-primary dark:text-dark-glow-mint flex items-center justify-center font-bold">
+                    <span class="material-symbols-outlined text-[20px]">mosque</span>
+                  </span>
+                  <div>
+                    <div class="flex items-center gap-1.5">
+                      <span class="px-2 py-0.5 rounded bg-primary text-white text-[10px] font-bold uppercase">Fardhu</span>
+                      <h2 class="text-base font-bold text-text-primary dark:text-dark-text-primary">SALAT FARDHU 5 WAKTU (WAJIB)</h2>
+                    </div>
+                    <p class="text-xs text-text-secondary dark:text-dark-text-secondary">Pondasi utama keistiqomahan seorang muslim</p>
+                  </div>
+                </div>
+                <span class="text-xs font-semibold text-primary dark:text-dark-glow-mint bg-surface-container-low dark:bg-dark-border px-3 py-1 rounded-full">
+                  5 Waktu Utama
+                </span>
+              </div>
+
+              <!-- Prayer Checklist Items -->
+              <div class="flex flex-col gap-2.5">
+                <!-- Subuh -->
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between p-3 rounded-xl bg-surface-container-low dark:bg-dark-surface/50 border border-border-light/60 dark:border-dark-border gap-2">
+                  <div class="flex items-center gap-3">
+                    <button type="button" id="btn-check-subuh" class="checklist-btn w-7 h-7 rounded-lg bg-primary text-white flex items-center justify-center shadow-sm shrink-0">
+                      <span class="material-symbols-outlined text-[18px]">check</span>
+                    </button>
+                    <div>
+                      <div class="flex items-center gap-2">
+                        <span class="font-bold text-sm text-text-primary dark:text-dark-text-primary">Salat Subuh</span>
+                        <span class="text-xs text-text-secondary dark:text-dark-text-secondary">(04:28 WIB)</span>
+                        <span id="badge-status-subuh" class="px-2 py-0.5 rounded-full bg-soft-mint text-primary text-[10px] font-bold">Tepat Waktu</span>
+                      </div>
+                      <span class="text-[11px] text-text-secondary dark:text-dark-text-secondary">Tercatat di awal waktu</span>
+                    </div>
+                  </div>
+                  <label class="inline-flex items-center gap-2 cursor-pointer select-none pl-10 sm:pl-0">
+                    <span class="text-xs text-text-secondary dark:text-dark-text-secondary font-medium">Berjamaah di Masjid</span>
+                    <input type="checkbox" id="toggle-masjid-subuh" class="sr-only peer" checked/>
+                    <div class="w-10 h-5 bg-outline-variant peer-checked:bg-primary rounded-full relative transition-colors duration-200 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-transform peer-checked:after:translate-x-5"></div>
+                  </label>
+                </div>
+
+                <!-- Dzuhur -->
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between p-3 rounded-xl bg-surface-container-low dark:bg-dark-surface/50 border border-border-light/60 dark:border-dark-border gap-2">
+                  <div class="flex items-center gap-3">
+                    <button type="button" id="btn-check-dzuhur" class="checklist-btn w-7 h-7 rounded-lg bg-primary text-white flex items-center justify-center shadow-sm shrink-0">
+                      <span class="material-symbols-outlined text-[18px]">check</span>
+                    </button>
+                    <div>
+                      <div class="flex items-center gap-2">
+                        <span class="font-bold text-sm text-text-primary dark:text-dark-text-primary">Salat Dzuhur</span>
+                        <span class="text-xs text-text-secondary dark:text-dark-text-secondary">(11:52 WIB)</span>
+                        <span id="badge-status-dzuhur" class="px-2 py-0.5 rounded-full bg-soft-mint text-primary text-[10px] font-bold">Tepat Waktu</span>
+                      </div>
+                      <span class="text-[11px] text-text-secondary dark:text-dark-text-secondary">Tercatat di awal waktu</span>
+                    </div>
+                  </div>
+                  <label class="inline-flex items-center gap-2 cursor-pointer select-none pl-10 sm:pl-0">
+                    <span class="text-xs text-text-secondary dark:text-dark-text-secondary font-medium">Berjamaah di Masjid</span>
+                    <input type="checkbox" id="toggle-masjid-dzuhur" class="sr-only peer" checked/>
+                    <div class="w-10 h-5 bg-outline-variant peer-checked:bg-primary rounded-full relative transition-colors duration-200 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-transform peer-checked:after:translate-x-5"></div>
+                  </label>
+                </div>
+
+                <!-- Ashar -->
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between p-3 rounded-xl bg-surface-container-low dark:bg-dark-surface/50 border border-border-light/60 dark:border-dark-border gap-2">
+                  <div class="flex items-center gap-3">
+                    <button type="button" id="btn-check-ashar" class="checklist-btn w-7 h-7 rounded-lg bg-primary text-white flex items-center justify-center shadow-sm shrink-0">
+                      <span class="material-symbols-outlined text-[18px]">check</span>
+                    </button>
+                    <div>
+                      <div class="flex items-center gap-2">
+                        <span class="font-bold text-sm text-text-primary dark:text-dark-text-primary">Salat Ashar</span>
+                        <span class="text-xs text-text-secondary dark:text-dark-text-secondary">(15:15 WIB)</span>
+                        <span id="badge-status-ashar" class="px-2 py-0.5 rounded-full bg-soft-mint text-primary text-[10px] font-bold">Tepat Waktu</span>
+                      </div>
+                      <span class="text-[11px] text-text-secondary dark:text-dark-text-secondary">Tercatat di awal waktu</span>
+                    </div>
+                  </div>
+                  <label class="inline-flex items-center gap-2 cursor-pointer select-none pl-10 sm:pl-0">
+                    <span class="text-xs text-text-secondary dark:text-dark-text-secondary font-medium">Berjamaah</span>
+                    <input type="checkbox" id="toggle-masjid-ashar" class="sr-only peer"/>
+                    <div class="w-10 h-5 bg-outline-variant peer-checked:bg-primary rounded-full relative transition-colors duration-200 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-transform peer-checked:after:translate-x-5"></div>
+                  </label>
+                </div>
+
+                <!-- Maghrib -->
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between p-3 rounded-xl bg-surface-container-low dark:bg-dark-surface/50 border border-border-light/60 dark:border-dark-border gap-2">
+                  <div class="flex items-center gap-3">
+                    <button type="button" id="btn-check-maghrib" class="checklist-btn w-7 h-7 rounded-lg bg-surface-container dark:bg-dark-border text-outline flex items-center justify-center shadow-sm shrink-0"></button>
+                    <div>
+                      <div class="flex items-center gap-2">
+                        <span class="font-bold text-sm text-text-primary dark:text-dark-text-primary">Salat Maghrib</span>
+                        <span class="text-xs text-text-secondary dark:text-dark-text-secondary">(17:58 WIB)</span>
+                        <span id="badge-status-maghrib" class="px-2 py-0.5 rounded-full bg-surface-container text-text-secondary text-[10px] font-medium">Menunggu Waktu</span>
+                      </div>
+                      <span class="text-[11px] text-text-secondary dark:text-dark-text-secondary">Belum dilaksanakan</span>
+                    </div>
+                  </div>
+                  <label class="inline-flex items-center gap-2 cursor-pointer select-none pl-10 sm:pl-0">
+                    <span class="text-xs text-text-secondary dark:text-dark-text-secondary font-medium">Berjamaah</span>
+                    <input type="checkbox" id="toggle-masjid-maghrib" class="sr-only peer"/>
+                    <div class="w-10 h-5 bg-outline-variant peer-checked:bg-primary rounded-full relative transition-colors duration-200 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-transform peer-checked:after:translate-x-5"></div>
+                  </label>
+                </div>
+
+                <!-- Isya -->
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between p-3 rounded-xl bg-surface-container-low dark:bg-dark-surface/50 border border-border-light/60 dark:border-dark-border gap-2">
+                  <div class="flex items-center gap-3">
+                    <button type="button" id="btn-check-isya" class="checklist-btn w-7 h-7 rounded-lg bg-surface-container dark:bg-dark-border text-outline flex items-center justify-center shadow-sm shrink-0"></button>
+                    <div>
+                      <div class="flex items-center gap-2">
+                        <span class="font-bold text-sm text-text-primary dark:text-dark-text-primary">Salat Isya</span>
+                        <span class="text-xs text-text-secondary dark:text-dark-text-secondary">(19:09 WIB)</span>
+                        <span id="badge-status-isya" class="px-2 py-0.5 rounded-full bg-surface-container text-text-secondary text-[10px] font-medium">Menunggu Waktu</span>
+                      </div>
+                      <span class="text-[11px] text-text-secondary dark:text-dark-text-secondary">Belum dilaksanakan</span>
+                    </div>
+                  </div>
+                  <label class="inline-flex items-center gap-2 cursor-pointer select-none pl-10 sm:pl-0">
+                    <span class="text-xs text-text-secondary dark:text-dark-text-secondary font-medium">Berjamaah</span>
+                    <input type="checkbox" id="toggle-masjid-isya" class="sr-only peer"/>
+                    <div class="w-10 h-5 bg-outline-variant peer-checked:bg-primary rounded-full relative transition-colors duration-200 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-transform peer-checked:after:translate-x-5"></div>
+                  </label>
+                </div>
+              </div>
+            </section>
+
+            <!-- 2. Ibadah Sunnah & Amalan Pendukung -->
+            <section class="bg-surface-container-lowest dark:bg-dark-surface rounded-2xl p-6 border border-border-light dark:border-dark-border shadow-sm flex flex-col gap-4">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                  <span class="w-9 h-9 rounded-xl bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-400 flex items-center justify-center font-bold">
+                    <span class="material-symbols-outlined text-[20px]">star</span>
+                  </span>
+                  <div>
+                    <div class="flex items-center gap-1.5">
+                      <span class="px-2 py-0.5 rounded bg-amber-600 text-white text-[10px] font-bold uppercase">Sunnah Mu'akkad</span>
+                      <h2 class="text-base font-bold text-text-primary dark:text-dark-text-primary">IBADAH SUNNAH &amp; AMALAN PENDUKUNG</h2>
+                    </div>
+                    <p class="text-xs text-text-secondary dark:text-dark-text-secondary">Menyempurnakan kekurangan amalan wajib &amp; mendekat kepada Ar-Rahman</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Sunnah Steppers Grid (4 Kartu) -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <!-- Dhuha -->
+                <div class="p-3.5 rounded-xl bg-surface-container-low dark:bg-dark-surface/50 border border-border-light/60 dark:border-dark-border flex items-center justify-between">
+                  <div class="flex items-center gap-2.5">
+                    <span class="material-symbols-outlined text-amber-600 dark:text-amber-400 text-[22px]">wb_sunny</span>
+                    <div>
+                      <span class="font-bold text-sm text-text-primary dark:text-dark-text-primary block">Salat Dhuha</span>
+                      <span class="text-[11px] text-text-secondary dark:text-dark-text-secondary">Sedekah 360 persendian</span>
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-2 bg-surface-container-lowest dark:bg-dark-surface px-2 py-1 rounded-lg border border-border-light dark:border-dark-border shadow-sm">
+                    <button type="button" id="btn-minus-dhuha" class="w-6 h-6 rounded-md hover:bg-surface-container flex items-center justify-center font-bold text-xs">-</button>
+                    <span id="count-display-dhuha" class="font-bold text-xs text-primary dark:text-dark-glow-mint min-w-[50px] text-center">4 Rakaat</span>
+                    <button type="button" id="btn-plus-dhuha" class="w-6 h-6 rounded-md hover:bg-surface-container flex items-center justify-center font-bold text-xs">+</button>
+                  </div>
+                </div>
+
+                <!-- Tahajud -->
+                <div class="p-3.5 rounded-xl bg-surface-container-low dark:bg-dark-surface/50 border border-border-light/60 dark:border-dark-border flex items-center justify-between">
+                  <div class="flex items-center gap-2.5">
+                    <span class="material-symbols-outlined text-indigo-600 dark:text-indigo-400 text-[22px]">nightlight</span>
+                    <div>
+                      <span class="font-bold text-sm text-text-primary dark:text-dark-text-primary block">Tahajud / Qiyam</span>
+                      <span class="text-[11px] text-text-secondary dark:text-dark-text-secondary">Kemuliaan di sepertiga malam</span>
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-2 bg-surface-container-lowest dark:bg-dark-surface px-2 py-1 rounded-lg border border-border-light dark:border-dark-border shadow-sm">
+                    <button type="button" id="btn-minus-tahajud" class="w-6 h-6 rounded-md hover:bg-surface-container flex items-center justify-center font-bold text-xs">-</button>
+                    <span id="count-display-tahajud" class="font-bold text-xs text-primary dark:text-dark-glow-mint min-w-[50px] text-center">8 Rakaat</span>
+                    <button type="button" id="btn-plus-tahajud" class="w-6 h-6 rounded-md hover:bg-surface-container flex items-center justify-center font-bold text-xs">+</button>
+                  </div>
+                </div>
+
+                <!-- Rawatib -->
+                <div class="p-3.5 rounded-xl bg-surface-container-low dark:bg-dark-surface/50 border border-border-light/60 dark:border-dark-border flex items-center justify-between">
+                  <div class="flex items-center gap-2.5">
+                    <span class="material-symbols-outlined text-primary dark:text-dark-glow-mint text-[22px]">auto_stories</span>
+                    <div>
+                      <span class="font-bold text-sm text-text-primary dark:text-dark-text-primary block">Salat Rawatib</span>
+                      <span class="text-[11px] text-text-secondary dark:text-dark-text-secondary">Qobliyah &amp; Ba'diyah</span>
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-2 bg-surface-container-lowest dark:bg-dark-surface px-2 py-1 rounded-lg border border-border-light dark:border-dark-border shadow-sm">
+                    <button type="button" id="btn-minus-rawatib" class="w-6 h-6 rounded-md hover:bg-surface-container flex items-center justify-center font-bold text-xs">-</button>
+                    <span id="count-display-rawatib" class="font-bold text-xs text-primary dark:text-dark-glow-mint min-w-[50px] text-center">6 Rakaat</span>
+                    <button type="button" id="btn-plus-rawatib" class="w-6 h-6 rounded-md hover:bg-surface-container flex items-center justify-center font-bold text-xs">+</button>
+                  </div>
+                </div>
+
+                <!-- Witir -->
+                <div class="p-3.5 rounded-xl bg-surface-container-low dark:bg-dark-surface/50 border border-border-light/60 dark:border-dark-border flex items-center justify-between">
+                  <div class="flex items-center gap-2.5">
+                    <span class="material-symbols-outlined text-emerald-600 dark:text-emerald-400 text-[22px]">brightness_2</span>
+                    <div>
+                      <span class="font-bold text-sm text-text-primary dark:text-dark-text-primary block">Salat Witir</span>
+                      <span class="text-[11px] text-text-secondary dark:text-dark-text-secondary">Penutup salat malam</span>
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-2 bg-surface-container-lowest dark:bg-dark-surface px-2 py-1 rounded-lg border border-border-light dark:border-dark-border shadow-sm">
+                    <button type="button" id="btn-minus-witir" class="w-6 h-6 rounded-md hover:bg-surface-container flex items-center justify-center font-bold text-xs">-</button>
+                    <span id="count-display-witir" class="font-bold text-xs text-primary dark:text-dark-glow-mint min-w-[50px] text-center">3 Rakaat</span>
+                    <button type="button" id="btn-plus-witir" class="w-6 h-6 rounded-md hover:bg-surface-container flex items-center justify-center font-bold text-xs">+</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Puasa Sunnah & Sedekah Harian -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-1">
+                <div class="p-3.5 rounded-xl bg-surface-container-low dark:bg-dark-surface/50 border border-border-light/60 dark:border-dark-border flex items-center justify-between">
+                  <div class="flex items-center gap-2.5">
+                    <span class="material-symbols-outlined text-orange-600 text-[22px]">restaurant</span>
+                    <div>
+                      <span class="font-bold text-sm text-text-primary dark:text-dark-text-primary block">Puasa Sunnah</span>
+                      <span class="text-[11px] text-text-secondary dark:text-dark-text-secondary">Senin-Kamis / Daud</span>
+                    </div>
+                  </div>
+                  <label class="inline-flex items-center cursor-pointer select-none">
+                    <input type="checkbox" id="toggle-puasa" class="sr-only peer"/>
+                    <div class="w-10 h-5 bg-outline-variant peer-checked:bg-primary rounded-full relative transition-colors duration-200 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-transform peer-checked:after:translate-x-5"></div>
+                  </label>
+                </div>
+
+                <div class="p-3.5 rounded-xl bg-surface-container-low dark:bg-dark-surface/50 border border-border-light/60 dark:border-dark-border flex items-center justify-between">
+                  <div class="flex items-center gap-2.5">
+                    <span class="material-symbols-outlined text-primary dark:text-dark-glow-mint text-[22px]">volunteer_activism</span>
+                    <div>
+                      <span class="font-bold text-sm text-text-primary dark:text-dark-text-primary block">Sedekah Subuh</span>
+                      <span class="text-[11px] text-text-secondary dark:text-dark-text-secondary">Doa Malaikat di Waktu Pagi</span>
+                    </div>
+                  </div>
+                  <input type="text" id="input-sedekah" placeholder="Rp 20.000" class="w-24 px-2 py-1 text-xs font-semibold rounded-lg bg-surface-container-lowest dark:bg-dark-surface border border-border-light dark:border-dark-border text-primary dark:text-dark-glow-mint text-right focus:outline-none"/>
+                </div>
+              </div>
+            </section>
+
+            <!-- 3. Tilawah Al-Qur'an Harian -->
+            <section class="bg-surface-container-lowest dark:bg-dark-surface rounded-2xl p-6 border border-border-light dark:border-dark-border shadow-sm flex flex-col gap-4">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                  <span class="w-9 h-9 rounded-xl bg-soft-mint dark:bg-primary/30 text-primary dark:text-dark-glow-mint flex items-center justify-center font-bold">
+                    <span class="material-symbols-outlined text-[20px]">menu_book</span>
+                  </span>
+                  <div>
+                    <h2 class="text-base font-bold text-text-primary dark:text-dark-text-primary">Tilawah Al-Qur'an Harian</h2>
+                    <p class="text-xs text-text-secondary dark:text-dark-text-secondary">Target Harian: 1 Juz (20 Halaman)</p>
+                  </div>
+                </div>
+                <span class="text-xs font-bold text-primary dark:text-dark-glow-mint bg-soft-mint dark:bg-primary/30 px-2.5 py-1 rounded-full">
+                  70% Target Tercapai
+                </span>
+              </div>
+
+              <!-- Interactive Stepper with Visual Progress Bar -->
+              <div class="flex flex-col gap-3 bg-surface-container-low dark:bg-dark-surface/50 p-4 rounded-xl border border-border-light/60 dark:border-dark-border">
+                <div class="flex items-center justify-between">
+                  <button type="button" id="btn-minus-tilawah" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-surface-container-lowest dark:bg-dark-surface border border-border-light dark:border-dark-border text-xs font-bold hover:bg-surface-container transition-colors shadow-sm">
+                    - 1 Halaman
+                  </button>
+                  <div class="flex flex-col items-center">
+                    <div class="flex items-baseline gap-1">
+                      <span id="tilawah-count-display" class="text-3xl font-extrabold text-primary dark:text-dark-glow-mint">14</span>
+                      <span class="text-sm font-bold text-text-primary dark:text-dark-text-primary">Halaman</span>
+                    </div>
+                    <span class="text-[11px] text-text-secondary dark:text-dark-text-secondary">Juz 15: Al-Isra s.d. Al-Kahf</span>
+                  </div>
+                  <button type="button" id="btn-plus-tilawah" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-primary text-white text-xs font-bold hover:bg-primary-dark transition-colors shadow-sm">
+                    + 1 Halaman
+                  </button>
+                </div>
+
+                <!-- Progress Bar -->
+                <div class="w-full bg-surface-container dark:bg-dark-border h-2 rounded-full overflow-hidden">
+                  <div id="tilawah-progress-bar" class="bg-primary dark:bg-dark-glow-mint h-full rounded-full transition-all duration-300" style="width: 70%"></div>
+                </div>
+                <div class="flex justify-between text-[10px] text-text-secondary dark:text-dark-text-secondary font-medium">
+                  <span>Halaman 0</span>
+                  <span class="font-bold text-primary dark:text-dark-glow-mint">Sisa 6 Halaman lagi</span>
+                  <span>20 Halaman (1 Juz)</span>
+                </div>
+              </div>
+            </section>
+
+            <!-- 4. Catatan Refleksi & Syukur (Muhasabah) -->
+            <section class="bg-surface-container-lowest dark:bg-dark-surface rounded-2xl p-6 border border-border-light dark:border-dark-border shadow-sm flex flex-col gap-3">
+              <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary dark:text-dark-glow-mint text-[20px]">edit_note</span>
+                <h2 class="text-base font-bold text-text-primary dark:text-dark-text-primary">Catatan Refleksi &amp; Syukur (Muhasabah)</h2>
+              </div>
+              <textarea id="textarea-catatan-muhasabah" rows="3" placeholder="Tuliskan evaluasi diri hari ini, hal yang disyukuri, dan perbaikan untuk esok hari..." class="w-full p-3 text-xs rounded-xl bg-surface-container-low dark:bg-dark-surface/50 border border-border-light dark:border-dark-border focus:outline-none focus:ring-2 focus:ring-primary text-text-primary dark:text-dark-text-primary leading-relaxed"></textarea>
+              <div class="flex justify-between items-center text-[10px] text-text-secondary dark:text-dark-text-secondary">
+                <span>✨ Kalimat muhasabah melatih ketenangan jiwa</span>
+                <span>Tersimpan otomatis</span>
+              </div>
+            </section>
+
+          </div>
+
+          <!-- Right Column (4 Kolom): Sidebar Ringkasan & Adab -->
+          <div class="lg:col-span-4 flex flex-col gap-6">
+            
+            <!-- Donut Score Card -->
+            <div class="bg-surface-container-lowest dark:bg-dark-surface rounded-2xl p-6 border border-border-light dark:border-dark-border shadow-sm flex flex-col items-center text-center gap-4">
+              <div class="w-full flex items-center justify-between text-xs">
+                <span class="font-bold uppercase tracking-wider text-text-secondary dark:text-dark-text-secondary">RINGKASAN HARI INI</span>
+                <span class="text-amber-700 dark:text-amber-400 font-bold">🔥 14 Hari Istiqomah</span>
+              </div>
+
+              <!-- Large Donut Ring -->
+              <div class="relative w-36 h-36 flex items-center justify-center my-2">
+                <svg class="w-full h-full -rotate-90" viewBox="0 0 100 100">
+                  <circle cx="50" cy="50" r="40" fill="transparent" stroke="currentColor" stroke-width="8" class="text-surface-container-low dark:text-dark-border"></circle>
+                  <circle id="donut-mutabaah-circle" cx="50" cy="50" r="40" fill="transparent" stroke="#006948" stroke-width="8" stroke-dasharray="251.2" stroke-dashoffset="37.6" stroke-linecap="round" class="transition-all duration-700"></circle>
+                </svg>
+                <div class="absolute inset-0 flex flex-col items-center justify-center">
+                  <span id="donut-mutabaah-text" class="text-3xl font-extrabold text-primary dark:text-dark-glow-mint leading-none">85%</span>
+                  <span class="text-xs text-text-secondary dark:text-dark-text-secondary mt-1">11/13 Amalan</span>
+                </div>
+              </div>
+
+              <div class="p-3 rounded-xl bg-soft-mint/50 dark:bg-primary/20 border border-primary/20 w-full text-left">
+                <div class="flex items-center gap-1.5 text-primary dark:text-dark-glow-mint font-bold text-xs">
+                  <span class="material-symbols-outlined text-[16px]">verified</span>
+                  Kategori: Mumtaz (Istimewa)
+                </div>
+                <p class="text-[11px] text-text-secondary dark:text-dark-text-secondary mt-1">
+                  Tinggal 2 amalan bernilai sebelum hari berganti. Pertahankan keistiqomahan!
+                </p>
+              </div>
+            </div>
+
+            <!-- Tadabbur Harian Card -->
+            <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary via-primary-dark to-arabic-calligraphy text-white p-5 shadow-sm flex flex-col gap-3">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-secondary-container">TADABBUR HARIAN</span>
+              <p class="font-arabic text-2xl text-right leading-loose" dir="rtl">
+                فَإِذَا فَرَغْتَ فَانصَبْ وَإِلَىٰ رَبِّكَ فَارْغَب
+              </p>
+              <p class="text-xs text-white/90 italic leading-relaxed">
+                “Maka apabila engkau telah selesai (dari suatu urusan), tetaplah bekerja keras (untuk urusan yang lain), dan hanya kepada Tuhanmulah engkau berharap.”
+              </p>
+              <span class="text-[10px] font-semibold text-secondary-container">QS. Asy-Syarh: 7-8</span>
+            </div>
+
+            <!-- Adab Mutaba'ah Sehat -->
+            <div class="p-5 rounded-2xl bg-surface-container-low dark:bg-dark-surface border border-border-light dark:border-dark-border flex flex-col gap-2.5">
+              <div class="flex items-center gap-2 text-primary dark:text-dark-glow-mint font-bold text-xs uppercase tracking-wider">
+                <span class="material-symbols-outlined text-[18px]">psychology_alt</span>
+                Adab Mutaba'ah Sehat
+              </div>
+              <ul class="text-xs text-text-secondary dark:text-dark-text-secondary flex flex-col gap-2 list-disc pl-4 leading-relaxed">
+                <li>Jadikan pencatatan sebagai muhasabah cermin diri, bukan ajang riya'.</li>
+                <li>Amalan sedikit namun rutin lebih dicintai Allah dibanding amalan banyak yang terputus.</li>
+                <li>Jika terlewat, segerakan istighfar dan qadha bila disyariatkan.</li>
+              </ul>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- Sticky Floating Action Bar (Bottom Screen) -->
+        <aside class="fixed bottom-20 lg:bottom-6 left-1/2 -translate-x-1/2 z-40 w-[92%] max-w-[800px] bg-white/95 dark:bg-dark-surface/95 backdrop-blur-xl border border-border-light dark:border-dark-border rounded-full p-2.5 sm:p-3 shadow-2xl flex items-center justify-between gap-2">
+          <!-- Left: Real-time Score -->
+          <div class="flex items-center gap-2 pl-3">
+            <span class="material-symbols-outlined text-primary dark:text-dark-glow-mint text-[22px]">trending_up</span>
+            <div class="flex flex-col">
+              <div class="flex items-center gap-1.5">
+                <span class="text-xs font-bold text-text-secondary dark:text-dark-text-secondary">Skor Hari Ini:</span>
+                <span id="sticky-score-value" class="text-sm font-extrabold text-primary dark:text-dark-glow-mint">85%</span>
+              </div>
+              <span id="sticky-cat-value" class="text-[10px] text-text-secondary dark:text-dark-text-secondary">Kategori: Mumtaz</span>
+            </div>
+          </div>
+
+          <!-- Right: Buttons -->
+          <div class="flex items-center gap-2">
+            <button type="button" onclick="loadMutabaahForDate(AppState.selectedDate); renderMutabaahForm(); showToast('Formulir direset ke data tersimpan');" class="px-3 py-1.5 rounded-full text-xs font-semibold text-text-secondary dark:text-dark-text-secondary hover:bg-surface-container dark:hover:bg-dark-border transition-colors hidden sm:inline-flex items-center gap-1">
+              <span class="material-symbols-outlined text-[16px]">restart_alt</span>
+              Reset
+            </button>
+            <button type="button" id="btn-save-mutabaah" class="inline-flex items-center gap-2 bg-primary hover:bg-primary-dark text-white font-bold text-xs sm:text-sm px-5 py-2.5 rounded-full shadow-lg transition-transform active:scale-95">
+              <span class="material-symbols-outlined text-[18px]">cloud_sync</span>
+              <span>Simpan &amp; Selesaikan Mutaba'ah</span>
+            </button>
+          </div>
+        </aside>
+
+      </div>
+
+      <!-- =====================================================================
+           PANEL 3: EVALUASI & GRAFIK AMALAN BULANAN (VIEW 3)
+           ===================================================================== -->
+      <div id="view-evaluasi-dan-grafik" class="view-panel hidden flex flex-col gap-6">
+        
+        <!-- Header Bar -->
+        <section class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 bg-surface-container-lowest dark:bg-dark-surface p-6 rounded-2xl border border-border-light dark:border-dark-border shadow-sm">
+          <div class="flex flex-col gap-1">
+            <div class="flex items-center gap-1.5 text-primary dark:text-dark-glow-mint text-xs font-bold uppercase tracking-wider">
+              <span class="material-symbols-outlined text-[16px]">insights</span>
+              <span>MUHASABAH &amp; ANALITIK BULANAN</span>
+            </div>
+            <h1 class="text-2xl font-bold text-text-primary dark:text-dark-text-primary">Evaluasi &amp; Grafik Amalan Bulanan</h1>
+            <p class="text-sm text-text-secondary dark:text-dark-text-secondary">Tinjauan komprehensif keistiqomahan ibadah fardhu, sunnah, dan tilawah untuk penyucian jiwa.</p>
+          </div>
+
+          <!-- Actions / Filter Controls -->
+          <div class="flex flex-wrap items-center gap-2 shrink-0">
+            <!-- Period Selector -->
+            <div class="inline-flex items-center bg-surface-container-low dark:bg-dark-border rounded-xl px-3.5 py-2 text-xs border border-border-light dark:border-dark-border">
+              <span class="material-symbols-outlined text-primary dark:text-dark-glow-mint text-[18px] mr-2">calendar_month</span>
+              <div class="flex flex-col pr-2">
+                <span class="text-[10px] text-text-secondary dark:text-dark-text-secondary uppercase font-semibold">Periode Aktif</span>
+                <span class="font-bold text-text-primary dark:text-dark-text-primary">Oktober 2026 (Rabiul Awal 1448 H)</span>
+              </div>
+            </div>
+
+            <!-- Quick Download Button -->
+            <a href="#" data-path="rapor-bulanan" class="inline-flex items-center gap-1.5 bg-primary hover:bg-primary-dark text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-md transition-transform active:scale-95">
+              <span class="material-symbols-outlined text-[16px]">download</span>
+              <span>Unduh Rekap Laporan Bulanan (PDF/Excel)</span>
+            </a>
+          </div>
+        </section>
+
+        <!-- Top KPI Metric Grid (4 Stat Cards) -->
+        <section class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+          <!-- Card 1: Tingkat Istiqomah -->
+          <div class="bg-surface-container-lowest dark:bg-dark-surface p-5 rounded-2xl border border-border-light dark:border-dark-border shadow-sm flex flex-col justify-between">
+            <div class="flex items-start justify-between">
+              <span class="text-xs uppercase font-bold text-text-secondary dark:text-dark-text-secondary">Tingkat Istiqomah</span>
+              <div class="w-9 h-9 rounded-xl bg-soft-mint dark:bg-primary/30 flex items-center justify-center text-primary dark:text-dark-glow-mint">
+                <span class="material-symbols-outlined text-[20px]">trending_up</span>
+              </div>
+            </div>
+            <div class="mt-3 flex flex-col">
+              <div class="flex items-baseline gap-2">
+                <span class="text-4xl font-extrabold text-text-primary dark:text-dark-text-primary">88%</span>
+                <span class="text-[11px] font-bold text-primary dark:text-dark-glow-mint bg-soft-mint dark:bg-primary/30 px-2 py-0.5 rounded-full inline-flex items-center gap-0.5">
+                  <span class="material-symbols-outlined text-[12px]">arrow_upward</span>+6% vs bln lalu
+                </span>
+              </div>
+              <div class="w-full bg-surface-container dark:bg-dark-border h-1.5 rounded-full mt-2.5 overflow-hidden">
+                <div class="bg-primary dark:bg-dark-glow-mint h-full rounded-full" style="width: 88%"></div>
+              </div>
+              <span class="text-[11px] text-text-secondary dark:text-dark-text-secondary mt-1">Peningkatan tertinggi pada salat rawatib</span>
+            </div>
+          </div>
+
+          <!-- Card 2: Salat Fardhu -->
+          <div class="bg-surface-container-lowest dark:bg-dark-surface p-5 rounded-2xl border border-border-light dark:border-dark-border shadow-sm flex flex-col justify-between">
+            <div class="flex items-start justify-between">
+              <span class="text-xs uppercase font-bold text-text-secondary dark:text-dark-text-secondary">Salat Fardhu</span>
+              <div class="w-9 h-9 rounded-xl bg-soft-mint dark:bg-primary/30 flex items-center justify-center text-primary dark:text-dark-glow-mint">
+                <span class="material-symbols-outlined text-[20px] filled">check_circle</span>
+              </div>
+            </div>
+            <div class="mt-3 flex flex-col">
+              <div class="flex items-baseline gap-2">
+                <span class="text-4xl font-extrabold text-text-primary dark:text-dark-text-primary">145</span>
+                <span class="text-lg font-bold text-text-secondary dark:text-dark-text-secondary">/ 150</span>
+              </div>
+              <div class="w-full bg-surface-container dark:bg-dark-border h-1.5 rounded-full mt-2.5 overflow-hidden">
+                <div class="bg-primary dark:bg-dark-glow-mint h-full rounded-full" style="width: 96.6%"></div>
+              </div>
+              <span class="text-[11px] text-primary dark:text-dark-glow-mint font-semibold mt-1">96.6% Tepat Waktu &amp; Berjamaah</span>
+            </div>
+          </div>
+
+          <!-- Card 3: Streak Berturut-turut -->
+          <div class="bg-surface-container-lowest dark:bg-dark-surface p-5 rounded-2xl border border-border-light dark:border-dark-border shadow-sm flex flex-col justify-between">
+            <div class="flex items-start justify-between">
+              <span class="text-xs uppercase font-bold text-text-secondary dark:text-dark-text-secondary">Streak Berturut-turut</span>
+              <div class="w-9 h-9 rounded-xl bg-amber-100 dark:bg-amber-900/40 flex items-center justify-center text-amber-700 dark:text-amber-400">
+                <span class="material-symbols-outlined text-[20px] filled">local_fire_department</span>
+              </div>
+            </div>
+            <div class="mt-3 flex flex-col">
+              <div class="flex items-baseline gap-2">
+                <span class="text-4xl font-extrabold text-text-primary dark:text-dark-text-primary">18</span>
+                <span class="text-lg font-bold text-text-secondary dark:text-dark-text-secondary">Hari</span>
+                <span class="text-[11px] font-bold text-amber-700 dark:text-amber-400 bg-amber-100 dark:bg-amber-900/40 px-2 py-0.5 rounded-full ml-auto">
+                  Streak Terpanjang!
+                </span>
+              </div>
+              <div class="w-full bg-surface-container dark:bg-dark-border h-1.5 rounded-full mt-2.5 overflow-hidden">
+                <div class="bg-amber-500 h-full rounded-full" style="width: 78%"></div>
+              </div>
+              <span class="text-[11px] text-text-secondary dark:text-dark-text-secondary mt-1">Aktif tanpa putus sejak 5 Oktober</span>
+            </div>
+          </div>
+
+          <!-- Card 4: Khatam Al-Qur'an -->
+          <div class="bg-surface-container-lowest dark:bg-dark-surface p-5 rounded-2xl border border-border-light dark:border-dark-border shadow-sm flex flex-col justify-between">
+            <div class="flex items-start justify-between">
+              <span class="text-xs uppercase font-bold text-text-secondary dark:text-dark-text-secondary">Khatam Al-Qur'an</span>
+              <div class="w-9 h-9 rounded-xl bg-teal-100 dark:bg-teal-900/40 flex items-center justify-center text-teal-700 dark:text-teal-400">
+                <span class="material-symbols-outlined text-[20px]">auto_stories</span>
+              </div>
+            </div>
+            <div class="mt-3 flex flex-col">
+              <div class="flex items-baseline gap-2">
+                <span class="text-4xl font-extrabold text-text-primary dark:text-dark-text-primary">280</span>
+                <span class="text-lg font-bold text-text-secondary dark:text-dark-text-secondary">Halaman</span>
+              </div>
+              <div class="w-full bg-surface-container dark:bg-dark-border h-1.5 rounded-full mt-2.5 overflow-hidden">
+                <div class="bg-teal-600 h-full rounded-full" style="width: 93.3%"></div>
+              </div>
+              <span class="text-[11px] text-text-secondary dark:text-dark-text-secondary mt-1">Setara ~14 Juz (Target 1 Khatam/Bulan)</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- 30-Day Trend Chart -->
+        <section class="bg-surface-container-lowest dark:bg-dark-surface p-6 rounded-2xl border border-border-light dark:border-dark-border shadow-sm flex flex-col gap-4">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div>
+              <h2 class="text-base font-bold text-text-primary dark:text-dark-text-primary flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-primary"></span>
+                Tren Konsistensi Ibadah 30 Hari Terakhir
+              </h2>
+              <p class="text-xs text-text-secondary dark:text-dark-text-secondary">Pergerakan pemenuhan mutaba'ah fardhu dan sunnah dari tanggal 1 hingga 22 Oktober 2026</p>
+            </div>
+            <div class="flex items-center gap-3 text-xs font-semibold">
+              <span class="inline-flex items-center gap-1.5 text-primary dark:text-dark-glow-mint">
+                <span class="w-3 h-1 bg-primary rounded"></span> Konsistensi Harian
+              </span>
+              <span class="inline-flex items-center gap-1.5 text-amber-600 dark:text-amber-400">
+                <span class="w-3 h-0.5 border-t-2 border-dashed border-amber-600"></span> Target (80%)
+              </span>
+              <span class="bg-surface-container-low dark:bg-dark-border px-2.5 py-1 rounded-full text-text-primary dark:text-dark-text-primary">
+                Rata-rata: 89.2%
+              </span>
+            </div>
+          </div>
+
+          <div class="h-64 sm:h-72 w-full">
+            <canvas id="chart-trend-konsistensi"></canvas>
+          </div>
+        </section>
+
+        <!-- Category Breakdown & Prayer Punctuality Grid -->
+        <section class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <!-- Breakdown Kategori (7 Kolom) -->
+          <div class="lg:col-span-7 bg-surface-container-lowest dark:bg-dark-surface p-6 rounded-2xl border border-border-light dark:border-dark-border shadow-sm flex flex-col justify-between gap-5">
+            <div>
+              <div class="flex items-center justify-between">
+                <h3 class="font-bold text-base text-text-primary dark:text-dark-text-primary">Pencapaian Berdasarkan Kategori Ibadah</h3>
+                <span class="text-xs bg-surface-container-low dark:bg-dark-border px-2.5 py-1 rounded-full text-text-secondary dark:text-dark-text-secondary">Kompilasi 30 Hari</span>
+              </div>
+              <p class="text-xs text-text-secondary dark:text-dark-text-secondary mt-1">Distribusi keberhasilan per kuadran ibadah fardhu, sunnah rawatib, qiyamul lail, dan tilawah.</p>
+            </div>
+
+            <!-- Progress Bars List -->
+            <div class="flex flex-col gap-4 text-xs">
+              <!-- Salat Fardhu -->
+              <div>
+                <div class="flex justify-between font-bold text-text-primary dark:text-dark-text-primary mb-1">
+                  <span class="flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-[16px] text-primary">check_circle</span>
+                    Salat Fardhu (5 Waktu Berjamaah)
+                  </span>
+                  <span class="text-primary dark:text-dark-glow-mint">96%</span>
+                </div>
+                <div class="w-full bg-surface-container dark:bg-dark-border h-2 rounded-full overflow-hidden">
+                  <div class="bg-primary dark:bg-dark-glow-mint h-full rounded-full" style="width: 96%"></div>
+                </div>
+                <div class="flex justify-between text-[10px] text-text-secondary dark:text-dark-text-secondary mt-1">
+                  <span>145 Salat tepat waktu</span>
+                  <span>Target: 150 Waktu</span>
+                </div>
+              </div>
+
+              <!-- Salat Sunnah -->
+              <div>
+                <div class="flex justify-between font-bold text-text-primary dark:text-dark-text-primary mb-1">
+                  <span class="flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-[16px] text-amber-600">nightlight</span>
+                    Salat Sunnah (Tahajud / Dhuha / Rawatib)
+                  </span>
+                  <span class="text-amber-700 dark:text-amber-400">78%</span>
+                </div>
+                <div class="w-full bg-surface-container dark:bg-dark-border h-2 rounded-full overflow-hidden">
+                  <div class="bg-amber-500 h-full rounded-full" style="width: 78%"></div>
+                </div>
+                <div class="flex justify-between text-[10px] text-text-secondary dark:text-dark-text-secondary mt-1">
+                  <span>18x Dhuha • 14x Qiyamullail</span>
+                  <span>Target: >75% Konsistensi</span>
+                </div>
+              </div>
+
+              <!-- Tilawah Al-Quran -->
+              <div>
+                <div class="flex justify-between font-bold text-text-primary dark:text-dark-text-primary mb-1">
+                  <span class="flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-[16px] text-teal-600">auto_stories</span>
+                    Tilawah Al-Qur'an (Tadabbur Harian)
+                  </span>
+                  <span class="text-teal-700 dark:text-teal-400">93%</span>
+                </div>
+                <div class="w-full bg-surface-container dark:bg-dark-border h-2 rounded-full overflow-hidden">
+                  <div class="bg-teal-600 h-full rounded-full" style="width: 93%"></div>
+                </div>
+                <div class="flex justify-between text-[10px] text-text-secondary dark:text-dark-text-secondary mt-1">
+                  <span>Rata-rata 12.7 lembar per hari</span>
+                  <span>Hampir Capai 1 Khatam</span>
+                </div>
+              </div>
+
+              <!-- Puasa Sunnah & Infaq -->
+              <div>
+                <div class="flex justify-between font-bold text-text-primary dark:text-dark-text-primary mb-1">
+                  <span class="flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-[16px] text-rose-600">volunteer_activism</span>
+                    Puasa Sunnah &amp; Infaq Sedekah Subuh
+                  </span>
+                  <span class="text-rose-700 dark:text-rose-400">85%</span>
+                </div>
+                <div class="w-full bg-surface-container dark:bg-dark-border h-2 rounded-full overflow-hidden">
+                  <div class="bg-rose-500 h-full rounded-full" style="width: 85%"></div>
+                </div>
+                <div class="flex justify-between text-[10px] text-text-secondary dark:text-dark-text-secondary mt-1">
+                  <span>5x Puasa Senin-Kamis • 21x Sedekah Subuh</span>
+                  <span>Kategori: Amalan Sosial</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Rekomendasi Pekan Depan Box -->
+            <div class="p-3.5 rounded-xl bg-soft-mint/60 dark:bg-primary/20 border border-primary/20 flex items-start gap-2.5">
+              <span class="material-symbols-outlined text-primary dark:text-dark-glow-mint text-[20px] shrink-0">tips_and_updates</span>
+              <p class="text-xs text-text-primary dark:text-dark-text-primary leading-relaxed">
+                <span class="font-bold">Rekomendasi Pekan Depan:</span> Tingkatkan salat sunnah rawatib ba'diyah Isya dan ba'diyah Dzuhur untuk mengoptimalkan raihan pahala sunnah mu'akkad.
+              </p>
+            </div>
+          </div>
+
+          <!-- Ketepatan Waktu Donut Chart (5 Kolom) -->
+          <div class="lg:col-span-5 bg-surface-container-lowest dark:bg-dark-surface p-6 rounded-2xl border border-border-light dark:border-dark-border shadow-sm flex flex-col justify-between gap-4">
+            <div>
+              <h3 class="font-bold text-base text-text-primary dark:text-dark-text-primary">Ketepatan Waktu Salat 5 Waktu</h3>
+              <p class="text-xs text-text-secondary dark:text-dark-text-secondary mt-1">Distribusi waktu penunaian 150 waktu salat fardhu bulan ini.</p>
+            </div>
+
+            <!-- Donut Container -->
+            <div class="relative h-48 w-full flex items-center justify-center my-2">
+              <canvas id="chart-punctuality-donut"></canvas>
+              <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                <span class="text-2xl font-extrabold text-primary dark:text-dark-glow-mint">82%</span>
+                <span class="text-[10px] text-text-secondary dark:text-dark-text-secondary uppercase font-semibold">Awal Waktu</span>
+              </div>
+            </div>
+
+            <!-- Legend Pills -->
+            <div class="flex flex-col gap-2 text-xs">
+              <div class="flex items-center justify-between p-2 rounded-lg bg-surface-container-low dark:bg-dark-border">
+                <span class="flex items-center gap-2">
+                  <span class="w-3 h-3 rounded-full bg-primary"></span>
+                  Awal Waktu (&lt;15 Menit)
+                </span>
+                <span class="font-bold text-primary dark:text-dark-glow-mint">82% (123 waktu)</span>
+              </div>
+
+              <div class="flex items-center justify-between p-2 rounded-lg bg-surface-container-low dark:bg-dark-border">
+                <span class="flex items-center gap-2">
+                  <span class="w-3 h-3 rounded-full bg-amber-500"></span>
+                  Masih Dalam Waktu
+                </span>
+                <span class="font-bold text-amber-700 dark:text-amber-400">15% (23 waktu)</span>
+              </div>
+
+              <div class="flex items-center justify-between p-2 rounded-lg bg-surface-container-low dark:bg-dark-border">
+                <span class="flex items-center gap-2">
+                  <span class="w-3 h-3 rounded-full bg-rose-600"></span>
+                  Terlambat / Qadha
+                </span>
+                <span class="font-bold text-rose-600">3% (4 waktu)</span>
+              </div>
+            </div>
+
+            <p class="text-[11px] text-text-secondary dark:text-dark-text-secondary italic text-center">
+              “Amalan yang paling dicintai Allah adalah salat pada waktunya.” (HR. Bukhari)
+            </p>
+          </div>
+        </section>
+
+        <!-- 7x5 Calendar Heatmap Matrix -->
+        <section class="bg-surface-container-lowest dark:bg-dark-surface p-6 rounded-2xl border border-border-light dark:border-dark-border shadow-sm flex flex-col gap-4">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div>
+              <h2 class="text-base font-bold text-text-primary dark:text-dark-text-primary flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary text-[20px]">grid_view</span>
+                Peta Konsistensi Harian (Heatmap Kalender)
+              </h2>
+              <p class="text-xs text-text-secondary dark:text-dark-text-secondary">Distribusi realisasi pemenuhan amalan ibadah seluruh hari di bulan Oktober 2026.</p>
+            </div>
+            
+            <!-- Intensity Legend -->
+            <div class="flex items-center gap-2 text-xs">
+              <span class="text-text-secondary dark:text-dark-text-secondary text-[11px]">INTENSITAS:</span>
+              <span class="inline-flex items-center gap-1 text-[11px]">
+                <span class="w-3 h-3 rounded bg-[#006948]"></span> ≥90% (Mumtaz)
+              </span>
+              <span class="inline-flex items-center gap-1 text-[11px]">
+                <span class="w-3 h-3 rounded bg-[#00855d]"></span> 75-89% (Jayyid)
+              </span>
+              <span class="inline-flex items-center gap-1 text-[11px]">
+                <span class="w-3 h-3 rounded bg-[#34D399]"></span> 60-74% (Maqbul)
+              </span>
+              <span class="inline-flex items-center gap-1 text-[11px]">
+                <span class="w-3 h-3 rounded bg-surface-container-low dark:bg-dark-border border border-border-light"></span> &lt;60%
+              </span>
+            </div>
+          </div>
+
+          <!-- Day Headers -->
+          <div class="grid grid-cols-7 gap-2 text-center text-[11px] font-bold text-text-secondary dark:text-dark-text-secondary uppercase">
+            <span>Senin</span>
+            <span>Selasa</span>
+            <span>Rabu</span>
+            <span>Kamis</span>
+            <span>Jumat</span>
+            <span>Sabtu</span>
+            <span>Ahad</span>
+          </div>
+
+          <!-- Heatmap Cells Grid -->
+          <div id="heatmap-calendar-grid" class="grid grid-cols-7 gap-2">
+            <!-- Dynamically populated via app.js renderCalendarHeatmap() -->
+          </div>
+        </section>
+
+      </div>
+
+      <!-- =====================================================================
+           PANEL 4: RAPOR EVALUASI & EKSPOR PDF A4 (VIEW 4)
+           ===================================================================== -->
+      <div id="view-rapor-bulanan" class="view-panel hidden flex flex-col gap-6">
+        
+        <!-- Top Toolbar (Sticky) -->
+        <aside aria-label="Aksi Dokumen" class="sticky top-[72px] z-40 bg-surface-container-lowest/95 dark:bg-dark-surface/95 backdrop-blur-md rounded-2xl p-4 border border-border-light dark:border-dark-border shadow-md flex flex-wrap items-center justify-between gap-3 no-print">
+          <div class="flex items-center gap-3">
+            <a href="#" data-path="evaluasi-dan-grafik" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-surface-container-low dark:bg-dark-border text-primary dark:text-dark-glow-mint hover:bg-surface-container text-xs font-bold transition-colors">
+              <span class="material-symbols-outlined text-[18px]">arrow_back</span>
+              <span>Kembali ke Evaluasi</span>
+            </a>
+            <div class="hidden sm:flex items-center gap-1.5 text-text-secondary dark:text-dark-text-secondary text-xs">
+              <span class="material-symbols-outlined text-primary text-[16px]">verified</span>
+              <span>Pratinjau Resmi Siap Cetak A4</span>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <button type="button" onclick="window.print()" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-surface-container dark:bg-dark-border text-text-primary dark:text-dark-text-primary hover:bg-surface-container-high text-xs font-bold transition-colors">
+              <span class="material-symbols-outlined text-[18px] text-primary">print</span>
+              <span>Cetak Langsung</span>
+            </button>
+            <button type="button" id="btn-download-pdf" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-primary hover:bg-primary-dark text-white text-xs font-bold shadow-md transition-transform active:scale-95">
+              <span class="material-symbols-outlined text-[18px]">download</span>
+              <span>Unduh Dokumen PDF Resmi</span>
+            </button>
+          </div>
+        </aside>
+
+        <!-- A4 Document Canvas Sheet Presentation -->
+        <div class="w-full flex justify-center pb-12">
+          <div id="a4-sheet" class="w-full max-w-[840px] bg-white text-slate-900 rounded-2xl shadow-2xl p-6 sm:p-10 border border-slate-200 relative overflow-hidden">
+            
+            <!-- Top Islamic Emerald Arch Border -->
+            <div class="h-3 w-full bg-gradient-to-r from-primary via-amber-500 to-emerald-400 rounded-t-xl -mx-6 sm:-mx-10 -mt-6 sm:-mt-10 mb-6"></div>
+
+            <!-- Bismillah Header Centerpiece -->
+            <div class="text-center mb-6">
+              <p class="font-arabic text-3xl sm:text-4xl text-arabic-calligraphy tracking-wide leading-none select-none">
+                بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
+              </p>
+              <span class="text-[10px] uppercase font-bold text-slate-500 tracking-widest mt-1 block">
+                Dengan Menyebut Nama Allah Yang Maha Pengasih Lagi Maha Penyayang
+              </span>
+            </div>
+
+            <!-- Official Letterhead Header Section -->
+            <header class="flex flex-col sm:flex-row items-center justify-between gap-4 pb-6 border-b border-slate-200">
+              <div class="flex items-center gap-4">
+                <div class="w-14 h-14 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-primary shrink-0 shadow-sm">
+                  <span class="material-symbols-outlined text-[32px] filled">mosque</span>
+                </div>
+                <div>
+                  <h1 class="text-lg sm:text-xl font-extrabold text-primary tracking-tight leading-tight">
+                    RAPOR EVALUASI &amp; MUTABA'AH IBADAH BULANAN
+                  </h1>
+                  <p class="text-xs text-slate-500 mt-0.5">Lembaga Mutaba'ah Digital Nurul Ibadah • Google Workspace Integrated</p>
+                  <div class="flex items-center gap-2 mt-1 text-[10px]">
+                    <span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded">TERVERIFIKASI SISTEM</span>
+                    <span class="text-slate-400">•</span>
+                    <span class="text-slate-600 font-medium">Kemenag RI Standard Baseline</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flex flex-col sm:items-end bg-slate-50 p-3 rounded-xl border border-slate-200 shrink-0 min-w-[200px]">
+                <span class="text-[10px] text-slate-500 uppercase font-semibold">NOMOR DOKUMEN</span>
+                <span id="report-doc-number" class="text-sm font-bold text-primary font-mono tracking-tight">NI-EVAL/2026/X/0842</span>
+                <span class="text-[10px] text-slate-500 mt-0.5">Klasifikasi: Arsip Keistiqomahan</span>
+              </div>
+            </header>
+
+            <!-- User Metadata Grid & Official Seal Stamp -->
+            <section class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center my-6">
+              <!-- 2-Columns Info -->
+              <div class="md:col-span-2 grid grid-cols-2 gap-3 bg-slate-50 p-4 rounded-xl border border-slate-200 text-xs">
+                <div>
+                  <span class="text-[10px] text-slate-500 uppercase font-semibold block">Nama Pengguna</span>
+                  <span id="report-user-name" class="font-bold text-slate-900 text-sm">Fulan bin Fulan</span>
+                  <span class="text-[11px] text-primary font-mono block">ID: USR-88219</span>
+                </div>
+                <div>
+                  <span class="text-[10px] text-slate-500 uppercase font-semibold block">Periode Evaluasi</span>
+                  <span class="font-bold text-slate-900 text-sm">Oktober 2026</span>
+                  <span class="text-[11px] text-slate-600 block">Rabiul Awal 1448 H</span>
+                </div>
+                <div>
+                  <span class="text-[10px] text-slate-500 uppercase font-semibold block">Domisili / Zona Waktu</span>
+                  <span id="report-user-domisili" class="font-semibold text-slate-900">DKI Jakarta (WIB)</span>
+                  <span class="text-[11px] text-slate-500 block">Metode Hisab Kemenag RI</span>
+                </div>
+                <div>
+                  <span class="text-[10px] text-slate-500 uppercase font-semibold block">Tanggal Terbit</span>
+                  <span class="font-semibold text-slate-900">22 Oktober 2026</span>
+                  <span class="text-[11px] text-primary block">Pukul 20:45 WIB</span>
+                </div>
+              </div>
+
+              <!-- Official Seal Stamp Badge -->
+              <div class="flex justify-center md:justify-end">
+                <div class="w-32 h-32 rounded-full bg-gradient-to-br from-emerald-100 via-emerald-50 to-amber-100 p-1.5 shadow-md flex items-center justify-center text-center">
+                  <div class="w-full h-full rounded-full bg-white border border-emerald-300 flex flex-col items-center justify-center p-2">
+                    <span class="material-symbols-outlined text-[18px] text-amber-500 filled">verified</span>
+                    <span class="text-[8px] font-bold text-primary uppercase tracking-wider mt-0.5">PREDIKAT</span>
+                    <span class="text-base font-extrabold text-primary leading-tight">MUMTAZ</span>
+                    <div class="h-0.5 w-8 bg-amber-400 my-0.5 rounded-full"></div>
+                    <span class="text-xs font-bold text-slate-800">88.4%</span>
+                    <span class="text-[8px] text-slate-500">Sangat Istiqomah</span>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- Key Summary Chips -->
+            <section class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6 text-xs">
+              <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 flex flex-col">
+                <span class="text-[10px] text-slate-500 uppercase font-semibold">Total Target</span>
+                <span class="text-lg font-extrabold text-slate-900">553 Amalan</span>
+                <span class="text-[10px] text-slate-500">Seluruh Matriks</span>
+              </div>
+              <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 flex flex-col">
+                <span class="text-[10px] text-slate-500 uppercase font-semibold">Realisasi</span>
+                <span class="text-lg font-extrabold text-primary">513 Amalan</span>
+                <span class="text-[10px] text-primary font-semibold">92.7% Eksekusi</span>
+              </div>
+              <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 flex flex-col">
+                <span class="text-[10px] text-slate-500 uppercase font-semibold">Streak Aktif</span>
+                <span class="text-lg font-extrabold text-amber-600">22 Hari</span>
+                <span class="text-[10px] text-slate-500">Konsistensi Subuh</span>
+              </div>
+              <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 flex flex-col">
+                <span class="text-[10px] text-slate-500 uppercase font-semibold">Index Khatam</span>
+                <span class="text-lg font-extrabold text-teal-700">14 Juz</span>
+                <span class="text-[10px] text-slate-500">Tilawah Bulanan</span>
+              </div>
+            </section>
+
+            <!-- Comprehensive Breakdown Table -->
+            <section class="mb-6 overflow-x-auto">
+              <table class="w-full text-left text-xs border-collapse">
+                <thead>
+                  <tr class="bg-primary text-white font-bold text-[11px] uppercase tracking-wider">
+                    <th class="p-3 rounded-tl-lg">Jenis Ibadah</th>
+                    <th class="p-3 text-center">Target Bulanan</th>
+                    <th class="p-3 text-center">Realisasi</th>
+                    <th class="p-3 text-center">Persentase</th>
+                    <th class="p-3 text-center rounded-tr-lg">Status Capaian</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-200 text-slate-800">
+                  <tr class="hover:bg-slate-50">
+                    <td class="p-3 font-semibold">
+                      <span class="text-primary font-bold mr-1">•</span> Salat Fardhu 5 Waktu
+                      <span class="text-[10px] text-slate-500 block font-normal">Dzuhur, Ashar, Maghrib, Isya, Subuh</span>
+                    </td>
+                    <td class="p-3 text-center font-mono">155 Waktu</td>
+                    <td class="p-3 text-center font-mono font-bold text-primary">150 Waktu</td>
+                    <td class="p-3 text-center font-bold">96.8%</td>
+                    <td class="p-3 text-center">
+                      <span class="bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded text-[10px] font-bold">Sangat Baik (Mumtaz)</span>
+                    </td>
+                  </tr>
+                  <tr class="hover:bg-slate-50">
+                    <td class="p-3 font-semibold">
+                      <span class="text-primary font-bold mr-1">•</span> Salat Berjama'ah di Masjid
+                      <span class="text-[10px] text-slate-500 block font-normal">Takbiratul Ihram bersama Imam</span>
+                    </td>
+                    <td class="p-3 text-center font-mono">100 Waktu</td>
+                    <td class="p-3 text-center font-mono font-bold text-primary">88 Waktu</td>
+                    <td class="p-3 text-center font-bold">88.0%</td>
+                    <td class="p-3 text-center">
+                      <span class="bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded text-[10px] font-bold">Istiqomah (Jayyid Jiddan)</span>
+                    </td>
+                  </tr>
+                  <tr class="hover:bg-slate-50">
+                    <td class="p-3 font-semibold">
+                      <span class="text-primary font-bold mr-1">•</span> Salat Sunnah (Dhuha / Tahajud / Witir)
+                      <span class="text-[10px] text-slate-500 block font-normal">Nawafil harian pelengkap fardhu</span>
+                    </td>
+                    <td class="p-3 text-center font-mono">60 Kali</td>
+                    <td class="p-3 text-center font-mono font-bold text-primary">51 Kali</td>
+                    <td class="p-3 text-center font-bold">85.0%</td>
+                    <td class="p-3 text-center">
+                      <span class="bg-blue-100 text-blue-800 px-2 py-0.5 rounded text-[10px] font-bold">Tercapai</span>
+                    </td>
+                  </tr>
+                  <tr class="hover:bg-slate-50">
+                    <td class="p-3 font-semibold">
+                      <span class="text-primary font-bold mr-1">•</span> Tilawah Al-Qur'an
+                      <span class="text-[10px] text-slate-500 block font-normal">One Day Half Juz Target</span>
+                    </td>
+                    <td class="p-3 text-center font-mono">300 Halaman</td>
+                    <td class="p-3 text-center font-mono font-bold text-teal-700">280 Halaman</td>
+                    <td class="p-3 text-center font-bold">93.3%</td>
+                    <td class="p-3 text-center">
+                      <span class="bg-teal-100 text-teal-800 px-2 py-0.5 rounded text-[10px] font-bold">Hampir Khatam</span>
+                    </td>
+                  </tr>
+                  <tr class="hover:bg-slate-50">
+                    <td class="p-3 font-semibold">
+                      <span class="text-primary font-bold mr-1">•</span> Puasa Sunnah (Senin / Kamis / Ayyamul Bidh)
+                      <span class="text-[10px] text-slate-500 block font-normal">Riyadhah penenang jiwa</span>
+                    </td>
+                    <td class="p-3 text-center font-mono">8 Hari</td>
+                    <td class="p-3 text-center font-mono font-bold text-amber-700">7 Hari</td>
+                    <td class="p-3 text-center font-bold">87.5%</td>
+                    <td class="p-3 text-center">
+                      <span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded text-[10px] font-bold">Istiqomah</span>
+                    </td>
+                  </tr>
+                  <tr class="hover:bg-slate-50">
+                    <td class="p-3 font-semibold">
+                      <span class="text-primary font-bold mr-1">•</span> Sedekah Subuh &amp; Harian
+                      <span class="text-[10px] text-slate-500 block font-normal">Infaq berkah pembuka rezeki</span>
+                    </td>
+                    <td class="p-3 text-center font-mono">30 Hari</td>
+                    <td class="p-3 text-center font-mono font-bold text-primary">27 Hari</td>
+                    <td class="p-3 text-center font-bold">90.0%</td>
+                    <td class="p-3 text-center">
+                      <span class="bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded text-[10px] font-bold">Terpenuhi</span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+
+            <!-- Catatan Evaluasi Spiritual & Tazkiyatun Nufus -->
+            <section class="bg-emerald-50/70 p-4 rounded-xl border border-emerald-200 mb-6 flex flex-col gap-2 text-xs">
+              <div class="flex items-center justify-between text-emerald-900 font-bold">
+                <span class="flex items-center gap-1.5">
+                  <span class="material-symbols-outlined text-[18px]">rate_review</span>
+                  Catatan Evaluasi Spiritual &amp; Tazkiyatun Nufus
+                </span>
+                <span class="text-[10px] text-emerald-700">Dewan Pembina Mutaba'ah</span>
+              </div>
+              <p class="italic text-slate-700 leading-relaxed">
+                “Masya Allah, ananda Fulan menunjukkan konsistensi luar biasa dalam menjaga salat fardhu berjamaah dan tilawah Al-Qur'an. Disarankan untuk lebih mengistiqomahkan qiyamullail dan witir di sepertiga malam terakhir, serta memperbanyak dzikir pagi petang agar ketenangan batin semakin kokoh.”
+              </p>
+              <div class="flex flex-wrap items-center gap-4 text-[10px] text-slate-600 mt-1 pt-2 border-t border-emerald-200">
+                <span>• <strong>Rekomendasi Bulan Depan:</strong> Peningkatan Kualitas Salat Khusyuk</span>
+                <span>• <strong>Status Tindak Lanjut:</strong> Lulus Bersyarat Mumtaz</span>
+              </div>
+            </section>
+
+            <!-- Sign-Off & Verification Footer -->
+            <footer class="grid grid-cols-1 sm:grid-cols-3 gap-6 items-end pt-4 border-t border-slate-200 text-xs">
+              <!-- Digital Verification QR Code -->
+              <div class="flex items-center gap-3">
+                <div id="report-qr-canvas" class="w-16 h-16 bg-white p-1 rounded-lg border border-slate-300 shadow-sm shrink-0 flex items-center justify-center">
+                  <!-- QR Code Rendered by app.js -->
+                </div>
+                <div class="flex flex-col">
+                  <span class="text-[10px] font-bold text-slate-700 uppercase">VERIFIKASI DIGITAL</span>
+                  <span class="text-[9px] text-slate-500">Pindai untuk Verifikasi Keaslian Dokumen</span>
+                  <span class="text-[9px] font-mono text-primary mt-0.5">Hash: 8f3a...c712</span>
+                </div>
+              </div>
+
+              <!-- Mudir Signature -->
+              <div class="flex flex-col items-center text-center">
+                <span class="text-[10px] text-slate-500 uppercase">Mengetahui, Mudir Muallimin</span>
+                <!-- Decorative signature vector -->
+                <div class="h-10 flex items-center justify-center my-1">
+                  <span class="font-arabic text-2xl text-emerald-800 -rotate-6 select-none">أحمد هداية الله</span>
+                </div>
+                <span class="font-bold text-slate-900">Ust. Ahmad Hidayatullah, M.Pd.</span>
+                <span class="text-[9px] text-slate-500 font-mono">NIP : 19840312.2018.04</span>
+              </div>
+
+              <!-- User Signature -->
+              <div class="flex flex-col items-center text-center">
+                <span class="text-[10px] text-slate-500 uppercase">Jakarta, 22 Oktober 2026</span>
+                <div class="h-10 flex items-center justify-center my-1">
+                  <span class="font-arabic text-2xl text-slate-700 select-none">فلان بن فلان</span>
+                </div>
+                <span class="font-bold text-slate-900">Fulan bin Fulan</span>
+                <span class="text-[9px] text-slate-500">Pribadi / Mutaba'ah Mandiri</span>
+              </div>
+            </footer>
+
+            <!-- Bottom Disclaimer -->
+            <div class="mt-6 pt-2 border-t border-slate-100 flex justify-between text-[9px] text-slate-400">
+              <span>Dokumen digital ini sah dan berkekuatan hukum internal syariah Nurul Ibadah Ecosystem.</span>
+              <span>Hal 1 dari 1 • ISO 9001:2015 Ibadah Assurance</span>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <!-- =====================================================================
+           PANEL 5: PENGATURAN & PREFERENSI (VIEW 5)
+           ===================================================================== -->
+      <div id="view-pengaturan" class="view-panel hidden flex flex-col gap-6">
+        
+        <div class="bg-surface-container-lowest dark:bg-dark-surface p-6 rounded-2xl border border-border-light dark:border-dark-border shadow-sm flex flex-col gap-6 max-w-3xl mx-auto w-full">
+          <div>
+            <h1 class="text-2xl font-bold text-text-primary dark:text-dark-text-primary">Pengaturan &amp; Preferensi Aplikasi</h1>
+            <p class="text-sm text-text-secondary dark:text-dark-text-secondary mt-1">Sesuaikan profil pengguna, domisili perhitungan waktu salat, target tilawah, dan tema.</p>
+          </div>
+
+          <!-- Section 1: Profil Pengguna -->
+          <div class="flex flex-col gap-4 pt-4 border-t border-border-light dark:border-dark-border">
+            <h2 class="text-sm font-bold uppercase tracking-wider text-primary dark:text-dark-glow-mint">Profil Pengguna</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-semibold text-text-secondary dark:text-dark-text-secondary mb-1">Nama Lengkap</label>
+                <input type="text" id="setting-nama" value="Fulan bin Fulan" class="w-full p-2.5 rounded-xl bg-surface-container-low dark:bg-dark-border border border-border-light dark:border-dark-border text-xs text-text-primary dark:text-dark-text-primary focus:outline-none focus:ring-2 focus:ring-primary"/>
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-text-secondary dark:text-dark-text-secondary mb-1">Gelar / Panggilan</label>
+                <input type="text" id="setting-gelar" value="Penuntut Ilmu" class="w-full p-2.5 rounded-xl bg-surface-container-low dark:bg-dark-border border border-border-light dark:border-dark-border text-xs text-text-primary dark:text-dark-text-primary focus:outline-none focus:ring-2 focus:ring-primary"/>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 2: Domisili & Standar Hisab -->
+          <div class="flex flex-col gap-4 pt-4 border-t border-border-light dark:border-dark-border">
+            <h2 class="text-sm font-bold uppercase tracking-wider text-primary dark:text-dark-glow-mint">Lokasi &amp; Standar Hisab Salat</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-semibold text-text-secondary dark:text-dark-text-secondary mb-1">Kota Domisili</label>
+                <div class="flex gap-2">
+                  <input type="text" id="setting-kota" value="DKI Jakarta" class="w-full p-2.5 rounded-xl bg-surface-container-low dark:bg-dark-border border border-border-light dark:border-dark-border text-xs text-text-primary dark:text-dark-text-primary focus:outline-none focus:ring-2 focus:ring-primary"/>
+                  <button type="button" onclick="showToast('Lokasi GPS terdeteksi: Jakarta (-6.1754, 106.8272)')" class="p-2.5 rounded-xl bg-primary text-white text-xs font-bold shrink-0 hover:bg-primary-dark">
+                    <span class="material-symbols-outlined text-[18px]">my_location</span>
+                  </button>
+                </div>
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-text-secondary dark:text-dark-text-secondary mb-1">Metode Perhitungan</label>
+                <select class="w-full p-2.5 rounded-xl bg-surface-container-low dark:bg-dark-border border border-border-light dark:border-dark-border text-xs text-text-primary dark:text-dark-text-primary focus:outline-none focus:ring-2 focus:ring-primary">
+                  <option selected>Kementerian Agama RI (Kemenag)</option>
+                  <option>Muslim World League (MWL)</option>
+                  <option>Egyptian General Authority of Survey</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 3: Target Harian -->
+          <div class="flex flex-col gap-4 pt-4 border-t border-border-light dark:border-dark-border">
+            <h2 class="text-sm font-bold uppercase tracking-wider text-primary dark:text-dark-glow-mint">Target Ibadah Pribadi</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-semibold text-text-secondary dark:text-dark-text-secondary mb-1">Target Tilawah (Halaman/Hari)</label>
+                <input type="number" id="setting-target-tilawah" value="10" class="w-full p-2.5 rounded-xl bg-surface-container-low dark:bg-dark-border border border-border-light dark:border-dark-border text-xs text-text-primary dark:text-dark-text-primary focus:outline-none focus:ring-2 focus:ring-primary"/>
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-text-secondary dark:text-dark-text-secondary mb-1">Target Tahajud (Malam/Pekan)</label>
+                <input type="number" id="setting-target-tahajud" value="3" class="w-full p-2.5 rounded-xl bg-surface-container-low dark:bg-dark-border border border-border-light dark:border-dark-border text-xs text-text-primary dark:text-dark-text-primary focus:outline-none focus:ring-2 focus:ring-primary"/>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 4: Sinkronisasi & Penyimpanan -->
+          <div class="flex flex-col gap-4 pt-4 border-t border-border-light dark:border-dark-border">
+            <h2 class="text-sm font-bold uppercase tracking-wider text-primary dark:text-dark-glow-mint">Sinkronisasi &amp; Database</h2>
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 rounded-xl bg-surface-container-low dark:bg-dark-border/50 border border-border-light dark:border-dark-border">
+              <div class="flex flex-col">
+                <span class="text-xs font-bold text-text-primary dark:text-dark-text-primary">Data Cache Offline Tersimpan</span>
+                <span class="text-[11px] text-text-secondary dark:text-dark-text-secondary">Penyimpanan Browser: ~45 KB (Aman &amp; Responsif)</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <button type="button" onclick="showToast('Cache lokal peramban dibersihkan');" class="px-3 py-1.5 rounded-xl bg-red-100 text-red-700 text-xs font-bold hover:bg-red-200 transition-colors">
+                  Bersihkan Cache
+                </button>
+                <button type="button" onclick="showToast('Menghubungkan ke Google Apps Script...'); syncWithBackend('ping', {});" class="px-4 py-1.5 rounded-xl bg-primary text-white text-xs font-bold hover:bg-primary-dark transition-colors shadow-sm">
+                  Uji Koneksi GAS
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Save Button -->
+          <div class="pt-2">
+            <button type="button" onclick="showToast('Pengaturan berhasil diperbarui!'); switchView('beranda');" class="w-full py-3 bg-primary hover:bg-primary-dark text-white font-bold text-sm rounded-xl shadow-md transition-transform active:scale-95">
+              Simpan Pengaturan
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <!-- =========================================================================
+       FOOTER INFORMASI & HAK CIPTA
+       ========================================================================= -->
+  <footer class="w-full border-t border-border-light dark:border-dark-border bg-surface-container-low/50 dark:bg-dark-surface/50 py-8 text-xs text-text-secondary dark:text-dark-text-secondary no-print">
+    <div class="max-w-[1200px] mx-auto px-4 md:px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex flex-col text-center sm:text-left">
+        <span class="font-bold text-sm text-primary dark:text-dark-glow-mint">Nurul Ibadah</span>
+        <span class="text-[11px]">Sistem pendamping keistiqomahan ibadah fardhu &amp; sunnah harian dengan penghitungan muhasabah.</span>
+        <span class="text-[10px] mt-1 opacity-75">© 2026 Nurul Ibadah. Seluruh hak cipta dilindungi.</span>
+      </div>
+      <div class="flex items-center gap-4 text-xs font-semibold">
+        <span>1448 H / 2026 M</span>
+        <span>•</span>
+        <span>Al-Qur'an &amp; Sunnah Terbimbing</span>
+        <span>•</span>
+        <span class="text-primary dark:text-dark-glow-mint">Tazkiyatun Nufus &amp; Mutaba'ah</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- =========================================================================
+       FIXED BOTTOM NAVIGATION BAR FOR MOBILE (SMARTPHONE VIEW - W-06)
+       ========================================================================= -->
+  <nav id="bottom-nav" class="fixed bottom-0 left-0 right-0 z-40 bg-surface-container-lowest/95 dark:bg-dark-surface/95 backdrop-blur-xl border-t border-border-light dark:border-dark-border px-4 py-2 flex items-center justify-around lg:hidden no-print">
+    <a href="#" data-path="beranda" class="flex flex-col items-center gap-0.5 text-xs text-primary dark:text-dark-glow-mint font-bold">
+      <span class="material-symbols-outlined text-[20px] filled">home</span>
+      <span>Beranda</span>
+    </a>
+    <a href="#" data-path="mutabaah-harian" class="flex flex-col items-center gap-0.5 text-xs text-text-secondary dark:text-dark-text-secondary">
+      <span class="material-symbols-outlined text-[20px]">check_box</span>
+      <span>Mutaba'ah</span>
+    </a>
+    <a href="#" data-path="evaluasi-dan-grafik" class="flex flex-col items-center gap-0.5 text-xs text-text-secondary dark:text-dark-text-secondary">
+      <span class="material-symbols-outlined text-[20px]">bar_chart</span>
+      <span>Evaluasi</span>
+    </a>
+    <a href="#" data-path="rapor-bulanan" class="flex flex-col items-center gap-0.5 text-xs text-text-secondary dark:text-dark-text-secondary">
+      <span class="material-symbols-outlined text-[20px]">description</span>
+      <span>Rapor</span>
+    </a>
+    <a href="#" data-path="pengaturan" class="flex flex-col items-center gap-0.5 text-xs text-text-secondary dark:text-dark-text-secondary">
+      <span class="material-symbols-outlined text-[20px]">settings</span>
+      <span>Pengaturan</span>
+    </a>
+  </nav>
+
+  <!-- =========================================================================
+       TOAST NOTIFICATION CONTAINER
+       ========================================================================= -->
+  <div id="toast-container" class="no-print"></div>
+
+  <!-- JavaScript Scripts: Config & Application -->
+  <script src="js/config.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
